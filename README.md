@@ -13,9 +13,6 @@ Openweathermaps
 - Current weather
 - Forecast
 
-## API calls
-api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={your api key}
-
 ## Design
 - Check Geolocation when site entered.
 - If no long or lattitude then Default to Sthlm
