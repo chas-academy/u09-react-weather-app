@@ -5,7 +5,7 @@ Openweathermaps
 
 ## TO DO
 - Start with API Call (Emil).
-- Convert to Celcius or Fahrenheit depending on state.
+- Convert to Celcius or Fahrenheit depending on state (Juan Pablo).
 - Figure out Geolocation (Viktor).
 
 ## Components
