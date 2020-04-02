@@ -4,12 +4,12 @@
 Openweathermaps
 
 ## TO DO
-- Start with API Call.
-- Convert to Celcius or Fahrenheit depending on state.
-- Figure out Geolocation.
+- Start with API Call (Emil).
+- Convert to Celcius or Fahrenheit depending on state (Juan Pablo).
+- Figure out Geolocation (Viktor).
 
 ## Components
-- Header
+- Header (Fahrenheit or Celcius)
 - Current weather
 - Forecast
 
