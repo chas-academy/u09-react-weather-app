@@ -6,10 +6,10 @@ Openweathermaps
 ## TO DO
 - Start with API Call.
 - Convert to Celcius or Fahrenheit depending on state.
-- Figure out Geolocation.
+- Figure out Geolocation (Viktor).
 
 ## Components
-- Header
+- Header (Fahrenheit or Celcius)
 - Current weather
 - Forecast
 
