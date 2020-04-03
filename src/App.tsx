@@ -2,6 +2,7 @@ import React, { Fragment} from 'react';
 import axios from 'axios';
 import Days from './days/days';
 import Header from './components/Header';
+import Forecast from './components/Forecast';
 
 export default class App extends React.Component {
 
@@ -20,11 +21,7 @@ export default class App extends React.Component {
       <main >
       <Header/>
       <section className = "d-flex flex-row justify-content-center">
-      <Days/>
-      <Days/>
-      <Days/>
-      <Days/>
-      <Days/>
+      <Forecast/>
       </section>
       </main>
     );
