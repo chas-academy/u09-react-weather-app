@@ -2,20 +2,17 @@ import React from 'react';
 
 const Days = props => {
     return (
-        <div className="card text-left col-md-2">
-            <h1 className = "text-center">Today</h1>
-            <ul>
-                <li >Temperature</li>
-                <li>Wind force</li>
-                <li>Humidity</li>
-                <li>Sunrise</li>
-                <li>Sunset</li>
-                <li>9am</li>
-                <li>12am</li>
-                <li>3pm</li>
-            </ul>
-            </div>
-     
+        <article className="card text-left col-sm-2 border-0">
+            <h1 className="text-center">Day</h1>
+            <h2 className="text-center">Temperature 30C</h2>
+            <p>First hour Temp</p>
+            <p>Second hour Temp</p>
+            <p>Third hour Temp</p>
+            <p>Wind force</p>
+            <p>Humidity</p>
+            <p>Sunrise</p>
+            <p>Sunset</p>
+        </article>
     );
 }
 

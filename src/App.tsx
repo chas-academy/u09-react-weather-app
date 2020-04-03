@@ -7,15 +7,25 @@ export default class App extends React.Component {
 
   componentDidMount (){
     // Get device location
-    
+    if(navigator.geolocation){
+      
+    }else{
+      console.log('Not Supported');
+    }
   }
 
 
   render(){
     return(
-      <main>
+      <main >
       <Header/>
+      <section className = "d-flex flex-row justify-content-center">
       <Days/>
+      <Days/>
+      <Days/>
+      <Days/>
+      <Days/>
+      </section>
       </main>
     );
   }
