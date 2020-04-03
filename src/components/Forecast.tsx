@@ -4,6 +4,7 @@ interface myState {
     weather: any,
     isLoaded: boolean,
     units: string,
+    geolocation: any
 }
 
 interface Hour {
@@ -22,43 +23,78 @@ class Forecast extends Component <{}, myState> {
             weather: [],
             isLoaded: false,
             units: 'metric',
+            geolocation: {
+                coords: {
+                    lon: 139,
+                    lat: 35
+                }
+            },
         }
     }
 
     componentDidMount() {
 
-        if (this.state.units === 'metric') {
-            fetch(`https://api.openweathermap.org/data/2.5/forecast?q=stockholm&units=metric&appid=${this.APIKey}`)
-            .then(res => res.json())
-            .then(json => {
-                this.setState({
-                    isLoaded: true,
-                    weather: json,
-                })
-            });
-        } else if (this.state.units === 'imperial') {
-            fetch(`https://api.openweathermap.org/data/2.5/forecast?q=stockholm&units=imperial&appid=${this.APIKey}`)
-            .then(res => res.json())
-            .then(json => {
-                this.setState({
-                    isLoaded: true,
-                    weather: json,
-                })
-            });
+        if (this.state.geolocation === 0) {
+            if (this.state.units === 'metric') {
+                fetch(`https://api.openweathermap.org/data/2.5/forecast?q=stockholm&units=metric&appid=${this.APIKey}`)
+                .then(res => res.json())
+                .then(json => {
+                    this.setState({
+                        isLoaded: true,
+                        weather: json,
+                    })
+                });
+            } else if (this.state.units === 'imperial') {
+                fetch(`https://api.openweathermap.org/data/2.5/forecast?q=stockholm&units=imperial&appid=${this.APIKey}`)
+                .then(res => res.json())
+                .then(json => {
+                    this.setState({
+                        isLoaded: true,
+                        weather: json,
+                    })
+                });
+            } else {
+                fetch(`https://api.openweathermap.org/data/2.5/forecast?q=stockholm&appid=${this.APIKey}`)
+                .then(res => res.json())
+                .then(json => {
+                    this.setState({
+                        isLoaded: true,
+                        weather: json,
+                    })
+                });
+            }  
         } else {
-            fetch(`https://api.openweathermap.org/data/2.5/forecast?q=stockholm&appid=${this.APIKey}`)
-            .then(res => res.json())
-            .then(json => {
-                this.setState({
-                    isLoaded: true,
-                    weather: json,
-                })
-            });
+            if (this.state.units === 'metric') {
+                fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${this.state.geolocation.coords.lat}&lon=${this.state.geolocation.coords.lon}&units=metric&appid=${this.APIKey}`)
+                .then(res => res.json())
+                .then(json => {
+                    this.setState({
+                        isLoaded: true,
+                        weather: json,
+                    })
+                });
+            } else if (this.state.units === 'imperial') {
+                fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${this.state.geolocation.coords.lat}&lon=${this.state.geolocation.coords.lon}&units=imperial&appid=${this.APIKey}`)
+                .then(res => res.json())
+                .then(json => {
+                    this.setState({
+                        isLoaded: true,
+                        weather: json,
+                    })
+                });
+            } else {
+                fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${this.state.geolocation.coords.lat}&lon=${this.state.geolocation.coords.lon}&appid=${this.APIKey}`)
+                .then(res => res.json())
+                .then(json => {
+                    this.setState({
+                        isLoaded: true,
+                        weather: json,
+                    })
+                });
+            }  
         }
 
-        
-
-    }
+   }
 
 
     render() {
@@ -72,15 +108,10 @@ class Forecast extends Component <{}, myState> {
             units = 'F';
         }
 
-        let day1 = this.state.weather.filter((hour: Hour) => {
-            return hour.dt_txt.includes('2020-04-03');
-        })
-
         if (!isLoaded) {
             return <div>Loading...</div>;
         } else {
-            console.log(weather.list);
-            //console.log(today);
+            console.log(weather);
             return (
                 <div className="Forecast">
                     <h2>{weather.city.name}, {weather.city.country}</h2>
