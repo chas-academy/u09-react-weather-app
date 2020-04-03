@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 interface myState {
     weather: any,
     isLoaded: boolean,
-    units: string
+    units: string,
 }
 
 interface Hour {
@@ -21,7 +21,7 @@ class Forecast extends Component <{}, myState> {
         this.state = {
             weather: [],
             isLoaded: false,
-            units: 'metric'
+            units: 'metric',
         }
     }
 
@@ -72,7 +72,9 @@ class Forecast extends Component <{}, myState> {
             units = 'F';
         }
 
-        //var today = weather.list.filter(weather.list.dt_txt === '2020-04-03 18:00:00'); 
+        let day1 = this.state.weather.filter((hour: Hour) => {
+            return hour.dt_txt.includes('2020-04-03');
+        })
 
         if (!isLoaded) {
             return <div>Loading...</div>;
@@ -83,8 +85,8 @@ class Forecast extends Component <{}, myState> {
                 <div className="Forecast">
                     <h2>{weather.city.name}, {weather.city.country}</h2>
                     <h4>5 day forecast</h4>
-                    {weather.list.map((hour: Hour) => (
-                            <p key={hour.dt}>
+                    {weather.list.map((hour: Hour, i: number) => (
+                            <p key={i}>
                                 {hour.dt_txt} | {hour.main.temp}° {units}
                             </p>
                         ))}
