@@ -1,10 +1,15 @@
 import React, { Fragment} from 'react';
 import axios from 'axios';
+import Days from './days/days';
+import Header from './components/Header';
 
-function App() {
-  return (
-   <h3>Weather</h3>
-  );
+export default class App extends React.Component {
+  render(){
+    return(
+      <main>
+      <Header/>
+      <Days/>
+      </main>
+    );
+  }
 }
-
-export default App;
