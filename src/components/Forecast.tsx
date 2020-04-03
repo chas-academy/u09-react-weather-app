@@ -83,13 +83,11 @@ class Forecast extends Component <{}, myState> {
                 <div className="Forecast">
                     <h2>{weather.city.name}, {weather.city.country}</h2>
                     <h4>5 day forecast</h4>
-                    <ul>
-                        {weather.list.map((hour: Hour) => (
-                            <li key={hour.dt}>
+                    {weather.list.map((hour: Hour) => (
+                            <p key={hour.dt}>
                                 {hour.dt_txt} | {hour.main.temp}° {units}
-                            </li>
+                            </p>
                         ))}
-                    </ul>
                 </div>
             )
         }
