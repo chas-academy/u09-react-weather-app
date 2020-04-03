@@ -4,6 +4,13 @@ import Days from './days/days';
 import Header from './components/Header';
 
 export default class App extends React.Component {
+
+  componentDidMount (){
+    // Get device location
+    
+  }
+
+
   render(){
     return(
       <main>
