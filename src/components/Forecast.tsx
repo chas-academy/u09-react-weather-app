@@ -7,7 +7,8 @@ interface myState {
 
 interface Hour {
     main: any,
-    dt: number
+    dt: number,
+    dt_txt: string
 }
 
 class Forecast extends Component <{}, myState> {
@@ -50,7 +51,7 @@ class Forecast extends Component <{}, myState> {
                     <ul>
                         {weather.list.map((hour: Hour) => (
                             <li key={hour.dt}>
-                                {hour.main.temp}
+                                {hour.dt_txt} | {hour.main.temp} K
                             </li>
                         ))}
                     </ul>
