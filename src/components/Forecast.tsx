@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Card from './Card';
 
 interface myState {
     weather: any,
@@ -12,7 +13,7 @@ interface Hour {
     dt_txt: string
 }
 
-class Forecast extends Component <{}, myState> {
+class Forecast extends Component<{}, myState> {
 
     private APIKey = '5a274b56354a707ffc91ac0c8eec0c72';
 
@@ -27,72 +28,74 @@ class Forecast extends Component <{}, myState> {
 
     componentDidMount() {
 
-        if (this.state.units === 'metric') {
-            fetch(`https://api.openweathermap.org/data/2.5/forecast?q=stockholm&units=metric&appid=${this.APIKey}`)
-            .then(res => res.json())
-            .then(json => {
-                this.setState({
-                    isLoaded: true,
-                    weather: json,
-                })
-            });
-        } else if (this.state.units === 'imperial') {
-            fetch(`https://api.openweathermap.org/data/2.5/forecast?q=stockholm&units=imperial&appid=${this.APIKey}`)
-            .then(res => res.json())
-            .then(json => {
-                this.setState({
-                    isLoaded: true,
-                    weather: json,
-                })
-            });
-        } else {
-            fetch(`https://api.openweathermap.org/data/2.5/forecast?q=stockholm&appid=${this.APIKey}`)
-            .then(res => res.json())
-            .then(json => {
-                this.setState({
-                    isLoaded: true,
-                    weather: json,
-                })
-            });
-        }
+        /*  if (this.state.units === 'metric') {
+             fetch(`https://api.openweathermap.org/data/2.5/forecast?q=stockholm&units=metric&appid=${this.APIKey}`)
+             .then(res => res.json())
+             .then(json => {
+                 this.setState({
+                     isLoaded: true,
+                     weather: json,
+                 })
+ 
+             });
+         } else if (this.state.units === 'imperial') {
+             fetch(`https://api.openweathermap.org/data/2.5/forecast?q=stockholm&units=imperial&appid=${this.APIKey}`)
+             .then(res => res.json())
+             .then(json => {
+                 this.setState({
+                     isLoaded: true,
+                     weather: json,
+                 })
+             });
+         } else {
+             fetch(`https://api.openweathermap.org/data/2.5/forecast?q=stockholm&appid=${this.APIKey}`)
+             .then(res => res.json())
+             .then(json => {
+                 this.setState({
+                     isLoaded: true,
+                     weather: json,
+                 })
+             });
+         } */
 
-        
+        fetch(`https://api.openweathermap.org/data/2.5/forecast?q=stockholm&units=metric&appid=${this.APIKey}`)
+            .then(res => res.json())
+            .then(json => {
+                const dailyData = json.list.filter((reading: { dt_txt: string | string[]; }) => reading.dt_txt.includes("18:00:00"))
+                this.setState({ weather: dailyData })
 
+            })
+    }
+
+
+
+    formatCards = () => {
+        return this.state.weather.map((day: any, index: string | number | undefined) => <Card day={day} key={index} />)
     }
 
 
     render() {
 
-        var { isLoaded, weather } = this.state;
+        return (
+            <div>
+              {this.formatCards()}
+            </div>
+          )
+
+    /*     var { isLoaded, weather } = this.state;
         var units = 'K';
 
         if (this.state.units === 'metric') {
             units = 'C';
         } else if (this.state.units === 'imperial') {
             units = 'F';
-        }
+        } */
 
         //var today = weather.list.filter(weather.list.dt_txt === '2020-04-03 18:00:00'); 
 
-        if (!isLoaded) {
-            return <div>Loading...</div>;
-        } else {
-            console.log(weather.list);
-            //console.log(today);
-            return (
-                <div className="Forecast">
-                    <h2>{weather.city.name}, {weather.city.country}</h2>
-                    <h4>5 day forecast</h4>
-                    {weather.list.map((hour: Hour) => (
-                            <p key={hour.dt}>
-                                {hour.dt_txt} | {hour.main.temp}° {units}
-                            </p>
-                        ))}
-                </div>
-            )
-        }
 
-        
+
+
     }
 }
 

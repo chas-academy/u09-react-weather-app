@@ -1,15 +1,18 @@
-import React, { Fragment} from 'react';
+import React, { Fragment, Component} from 'react';
 import axios from 'axios';
-import Days from './days/days';
 import Header from './components/Header';
 import Forecast from './components/Forecast';
+import Card from './components/Card'
 
 export default class App extends React.Component {
+
+  state = {
+
+  }
 
   componentDidMount (){
     // Get device location
     if(navigator.geolocation){
-      
     }else{
       console.log('Not Supported');
     }
