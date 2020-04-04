@@ -22,7 +22,7 @@ class Forecast extends Component<{}, myState> {
         this.state = {
             weather: [],
             isLoaded: false,
-            units: '',
+            units: 'F',
         }
     }
 
@@ -55,14 +55,6 @@ class Forecast extends Component<{}, myState> {
 
             })
          }
-/*
-        fetch(`https://api.openweathermap.org/data/2.5/forecast?q=stockholm&units=metric&appid=${this.APIKey}`)
-            .then(res => res.json())
-            .then(json => {
-                const dailyData = json.list.filter((reading: { dt_txt: string | string[]; }) => reading.dt_txt.includes("18:00:00"))
-                this.setState({ weather: dailyData })
-
-            })*/
     }
 
 
@@ -74,25 +66,13 @@ class Forecast extends Component<{}, myState> {
 
     render() {
 
+        console.log(this.state.weather);
+
         return (
             <div>
               {this.formatCards()}
             </div>
           )
-
-    /*     var { isLoaded, weather } = this.state;
-        var units = 'K';
-
-        if (this.state.units === 'metric') {
-            units = 'C';
-        } else if (this.state.units === 'imperial') {
-            units = 'F';
-        } */
-
-        //var today = weather.list.filter(weather.list.dt_txt === '2020-04-03 18:00:00'); 
-
-
-
 
     }
 }
