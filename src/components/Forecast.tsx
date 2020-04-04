@@ -27,28 +27,34 @@ class Forecast extends Component <{}, forecastState> {
             weather: [],
             isLoaded: false,
             units: 'metric',
-            geolocation: 0
+            geolocation: {
+                lat: '',
+                lon: ''
+            }
         }
     }
 
     // Function activates when component is rendered.
     componentDidMount() {
 
-            navigator.geolocation.getCurrentPosition(
-                position => {
-                    const geolocation = JSON.stringify(position);
-    
-                    this.setState({ geolocation });
-                },
-                error => console.log(error.message),
-                { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-            );
+        navigator.geolocation.getCurrentPosition(
+            position => {
+                const geolocation = position;
+                this.setState({ 
+                    geolocation: {
+                        lat: geolocation.coords.latitude,
+                        lon: geolocation.coords.longitude} 
+                });
+            },
+            error => console.log(error.message),
+            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+        );
 
         // Checks if we have any geolocation or not and executes API call with coordinates if there is any otherwise defaults to Stockholm.
-        if (this.state.geolocation === 0) {
+        if (this.state.geolocation.lat === '' || this.state.geolocation.lon === '') {
             // Checks what units we want to use and then executes API call with those units.
             if (this.state.units === 'metric') {
-                fetch(`https://api.openweathermap.org/data/2.5/forecast?q=stockholm&units=metric&appid=${this.APIKey}`)
+                fetch(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&units=metric&appid=${this.APIKey}`)
                 .then(res => res.json())
                 .then(json => {
                     this.setState({
@@ -57,7 +63,7 @@ class Forecast extends Component <{}, forecastState> {
                     })
                 });
             } else if (this.state.units === 'imperial') {
-                fetch(`https://api.openweathermap.org/data/2.5/forecast?q=stockholm&units=imperial&appid=${this.APIKey}`)
+                fetch(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&units=imperial&appid=${this.APIKey}`)
                 .then(res => res.json())
                 .then(json => {
                     // If API call works then sets isLoaded to true so we know it's done and stores the result of API call in weather.
@@ -67,7 +73,7 @@ class Forecast extends Component <{}, forecastState> {
                     })
                 });
             } else {
-                fetch(`https://api.openweathermap.org/data/2.5/forecast?q=stockholm&appid=${this.APIKey}`)
+                fetch(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&appid=${this.APIKey}`)
                 .then(res => res.json())
                 .then(json => {
                     this.setState({
@@ -76,9 +82,9 @@ class Forecast extends Component <{}, forecastState> {
                     })
                 });
             }  
-        } else {
+        } else if (this.state.geolocation.lat != '' || this.state.geolocation.lon != '') {
             if (this.state.units === 'metric') {
-                fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${this.state.geolocation.coords.lat}&lon=${this.state.geolocation.coords.lon}&units=metric&appid=${this.APIKey}`)
+                fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${this.state.geolocation.lat}&lon=${this.state.geolocation.lon}&units=metric&appid=${this.APIKey}`)
                 .then(res => res.json())
                 .then(json => {
                     this.setState({
@@ -87,7 +93,7 @@ class Forecast extends Component <{}, forecastState> {
                     })
                 });
             } else if (this.state.units === 'imperial') {
-                fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${this.state.geolocation.coords.lat}&lon=${this.state.geolocation.coords.lon}&units=imperial&appid=${this.APIKey}`)
+                fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${this.state.geolocation.lat}&lon=${this.state.geolocation.lon}&units=imperial&appid=${this.APIKey}`)
                 .then(res => res.json())
                 .then(json => {
                     this.setState({
@@ -96,7 +102,7 @@ class Forecast extends Component <{}, forecastState> {
                     })
                 });
             } else {
-                fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${this.state.geolocation.coords.lat}&lon=${this.state.geolocation.coords.lon}&appid=${this.APIKey}`)
+                fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${this.state.geolocation.lat}&lon=${this.state.geolocation.lon}&appid=${this.APIKey}`)
                 .then(res => res.json())
                 .then(json => {
                     this.setState({
