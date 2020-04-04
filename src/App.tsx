@@ -21,7 +21,7 @@ export default class App extends React.Component {
       <main >
       <Header/>
       <section className = "d-flex flex-row justify-content-center">
-      <Forecast/>
+        <Forecast/>
       </section>
       </main>
     );

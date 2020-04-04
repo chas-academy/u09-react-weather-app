@@ -27,17 +27,22 @@ class Forecast extends Component <{}, forecastState> {
             weather: [],
             isLoaded: false,
             units: 'metric',
-            geolocation: {
-                coords: {
-                    lon: 139,
-                    lat: 35
-                }
-            },
+            geolocation: 0
         }
     }
 
     // Function activates when component is rendered.
     componentDidMount() {
+
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    const geolocation = JSON.stringify(position);
+    
+                    this.setState({ geolocation });
+                },
+                error => console.log(error.message),
+                { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+            );
 
         // Checks if we have any geolocation or not and executes API call with coordinates if there is any otherwise defaults to Stockholm.
         if (this.state.geolocation === 0) {
@@ -108,7 +113,7 @@ class Forecast extends Component <{}, forecastState> {
     render() {
         
         // Defines variables for function.
-        var { isLoaded, weather } = this.state;
+        var { isLoaded, weather, geolocation } = this.state;
         var units = 'K';
 
         // Checks what units we're using to display correct letter after the degrees.
@@ -124,6 +129,7 @@ class Forecast extends Component <{}, forecastState> {
         } else {
             // Console logs weather for debugging purpose.
             console.log(weather);
+            console.log(this.state.geolocation);
             return (
                 <div className="Forecast">
                     <h2>{weather.city.name}, {weather.city.country}</h2>
