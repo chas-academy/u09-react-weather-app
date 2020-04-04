@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-// Interface for forecast State.
+// Interface for Forecast class State.
 interface forecastState {
     weather: any,
     isLoaded: boolean,
