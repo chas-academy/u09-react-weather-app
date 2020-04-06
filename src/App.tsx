@@ -10,7 +10,7 @@ export default class App extends React.Component {
 
   state = {
     coords: {
-      latitude: 35,
+      latitude: 39,
       longitude: 139,
     },
     data: {}
@@ -20,7 +20,7 @@ export default class App extends React.Component {
     // Get device geolocation
     if ( navigator.geolocation) {
 
-      console.log("supported");
+      console.log("Supported");
       
       navigator.geolocation.getCurrentPosition((position) => {
         let newCoords = {
@@ -28,9 +28,10 @@ export default class App extends React.Component {
           longitude: position.coords.longitude,
         }
         this.setState({ coords: newCoords });
+        console.log(newCoords);
 
-        Axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=stockholm&units=metric&appid=5a274b56354a707ffc91ac0c8eec0c72&query=
-                  ${this.state.coords.latitude}, ${this.state.coords.longitude}`).then(res => {
+        Axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${this.state.coords.latitude}&lon=${this.state.coords.longitude}&units=metric&appid=5a274b56354a707ffc91ac0c8eec0c72`)
+        .then(res => {
           console.log(res);
           let weatherData = {
             location: res.data.city.name,
@@ -77,6 +78,7 @@ export default class App extends React.Component {
       <main >
         <Header />
         <section className="d-flex flex-row justify-content-center">
+          {/*   <Test /> */}
           <UserLocation weatherData={this.state.data} />
         </section>
 
