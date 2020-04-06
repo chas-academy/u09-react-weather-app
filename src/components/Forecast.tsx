@@ -41,7 +41,7 @@ class Forecast extends Component <{}, forecastState> {
     componentDidMount() {
 
         // Checks if we have any geolocation or not and executes API call with coordinates if there is any otherwise defaults to Stockholm.
-       if (this.state.geolocation === 0) {
+        if (this.state.geolocation === 0) {
             // Checks what units we want to use and then executes API call with those units.
             if (this.state.units === 'metric') {
                 fetch(`https://api.openweathermap.org/data/2.5/forecast?q=stockholm&units=metric&appid=${this.APIKey}`)
@@ -101,16 +101,14 @@ class Forecast extends Component <{}, forecastState> {
                     })
                 });
             }  
-        } 
+        }
 
    }
-
-
 
    // Function that renders the component.
     render() {
         
- // Defines variables for function.
+        // Defines variables for function.
         var { isLoaded, weather } = this.state;
         var units = 'K';
 
