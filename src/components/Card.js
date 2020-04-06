@@ -2,7 +2,7 @@ import React from 'react';
 import './Card.css';
 var moment = require('moment');
 
-class Card extends React.Component {
+class Card extends React.Component (props){
   // Props: day, key(index)
 
   render() {
