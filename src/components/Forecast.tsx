@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Card from './Card';
+
+
 
 // Interface for Forecast class State.
 interface forecastState {
@@ -125,6 +126,7 @@ class Forecast extends Component <{}, forecastState> {
         } else {
             // Console logs weather for debugging purpose.
             console.log(weather);
+
             return (
                 
                 <div className="Forecast">
@@ -132,9 +134,10 @@ class Forecast extends Component <{}, forecastState> {
                     <h4>5 day forecast</h4>
                     {weather.list.map((hour: Hour, i: number) => (
                             <p key={i}>
-                                {hour.dt_txt} | {hour.main.temp}° {units}
+                                {hour.dt_txt} | {hour.main.temp}° {units} | {hour.main.humidity}
                             </p>
                         ))}
+                        
                 </div>
             )
         } 

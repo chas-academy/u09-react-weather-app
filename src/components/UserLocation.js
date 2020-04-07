@@ -1,14 +1,14 @@
 import React from 'react'
-var moment = require('moment');
+
 
 export default function UserLocation(props) {
 
-    const { temperature, description, location, region, country, wind_speed, sunrise, sunset, humidity, } = props.weatherData;
+    const { temperature, description, location, country, wind_speed, sunrise, sunset, humidity, } = props.weatherData;
 
 
     return (
         <div>
-            <div className="row card bg-light text-center">
+            <div className="row card bg-light border-0 text-center">
                 <div className="">
                     <h1>{temperature}<sup>o</sup>C<br></br>{description}</h1>
                     <h4>{location}, {country}</h4>
