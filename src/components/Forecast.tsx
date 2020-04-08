@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { resolve } from 'dns';
 
 // Interface for forecast State.
 interface forecastState {
@@ -47,7 +48,8 @@ class Forecast extends Component <{}, forecastState> {
       }
 
     getWeather = async (latitude: any, longitude: any) => {
-        if (latitude != null || longitude != null) {
+
+        if (longitude != null || latitude != null) {
             if (this.state.units === 'metric') {
                 const api_call = await
                 fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${this.APIKey}&units=metric`);
@@ -66,7 +68,7 @@ class Forecast extends Component <{}, forecastState> {
                     isLoaded: true
                     })
                 console.log('data is: ', data.list);
-            } else {
+            } else if (longitude === null || latitude === null) {
                 const api_call = await
                 fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${this.APIKey}`);
                 const data = await api_call.json();
@@ -74,10 +76,11 @@ class Forecast extends Component <{}, forecastState> {
                     weather: data,
                     isLoaded: true
                     })
-                console.log('data is: ', data.list);
+                console.log('data is: ', data);
             } 
             
-        } else if (latitude === null || longitude === null) {
+        } else {
+            console.log("Does work");
             const api_call = await
             fetch(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&units=metric&appid=${this.APIKey}`);
             const data = await api_call.json();
@@ -100,10 +103,10 @@ class Forecast extends Component <{}, forecastState> {
                                 position.coords.longitude)
                             }
             )
-            .catch((err) => console.log(err.message));
-        
-        
-
+            .catch(() => {
+                this.getWeather(null, null)
+                .then(() => console.log("Error: User denied location, defaulting to Berlin."))
+                });
    }
 
    // Function that renders the component.
@@ -163,46 +166,59 @@ class Forecast extends Component <{}, forecastState> {
             return <div>Loading...</div>;
         } else {
             // Console logs weather for debugging purpose.
-            console.log(weather);
-            console.log(today);
             return (
-                <div className="Forecast d-flex flex-column align-items-center">
+                <div className="Forecast d-flex flex-column align-items-center container">
                     <h2>{weather.city.name}, {weather.city.country}</h2>
                     <h4>5 day forecast</h4>
-                    <div className="row">
-                        <div className="col-md-2">
+                    <div className="row d-flex align-items-start justify-content-around">
+                        <div className="col-md border border-dark rounded">
+                            <h5>Date: {today[0].dt_txt.slice(0, 10)}</h5>
                             {today.map((hour: Hour, i: number) => (
-                                    <p key={i}>
-                                        {hour.dt_txt} | {Math.floor(hour.main.temp)}° {units}
-                                    </p>
-                                ))}
+                                <div key={i}>
+                                    <p>Time: {hour.dt_txt.slice(11)}</p>
+                                    <p>Temp: {Math.floor(hour.main.temp)}° {units}</p>
+                                    <hr/>
+                                </div>
+                            ))}
                         </div>
-                        <div className="col-md-2">
+                        <div className="col-md border border-dark rounded">
+                            <h5>Date: {tomorrow[0].dt_txt.slice(0, 10)}</h5>
                             {tomorrow.map((hour: Hour, i: number) => (
-                                <p key={i}>
-                                    {hour.dt_txt} | {Math.floor(hour.main.temp)}° {units}
-                                </p>
+                                <div key={i}>
+                                    <p>Time: {hour.dt_txt.slice(11)}</p>
+                                    <p>Temp: {Math.floor(hour.main.temp)}° {units}</p>
+                                    <hr/>
+                                </div>
                             ))}
                         </div>
-                        <div className="col-md-2">
+                        <div className="col-md border border-dark rounded">
+                            <h5>Date: {day3[0].dt_txt.slice(0, 10)}</h5>
                             {day3.map((hour: Hour, i: number) => (
-                                <p key={i}>
-                                    {hour.dt_txt} | {Math.floor(hour.main.temp)}° {units}
-                                </p>
+                                <div key={i}>
+                                    <p>Time: {hour.dt_txt.slice(11)}</p>
+                                    <p>Temp: {Math.floor(hour.main.temp)}° {units}</p>
+                                    <hr/>
+                                </div>
                             ))}
                         </div>
-                        <div className="col-md-2">
+                        <div className="col-md border border-dark rounded">
+                            <h5>Date: {day4[0].dt_txt.slice(0, 10)}</h5>
                             {day4.map((hour: Hour, i: number) => (
-                                <p key={i}>
-                                    {hour.dt_txt} | {Math.floor(hour.main.temp)}° {units}
-                                </p>
+                                <div key={i}>
+                                    <p>Time: {hour.dt_txt.slice(11)}</p>
+                                    <p>Temp: {Math.floor(hour.main.temp)}° {units}</p>
+                                    <hr/>
+                                </div>
                             ))}
                         </div>
-                        <div className="col-md-2">
+                        <div className="col-md border border-dark rounded">
+                            <h5>Date: {day5[0].dt_txt.slice(0, 10)}</h5>
                             {day5.map((hour: Hour, i: number) => (
-                                <p key={i}>
-                                    {hour.dt_txt} | {Math.floor(hour.main.temp)}° {units}
-                                </p>
+                                <div key={i}>
+                                    <p>Time: {hour.dt_txt.slice(11)}</p>
+                                    <p>Temp: {Math.floor(hour.main.temp)}° {units}</p>
+                                    <hr/>
+                                </div>
                             ))}
                         </div>
                     </div>
@@ -216,109 +232,3 @@ class Forecast extends Component <{}, forecastState> {
 
 // Exports class to be used in App.tsx.
 export default Forecast;
-
-
-/*   
-        navigator.geolocation.getCurrentPosition(
-            position => {
-                this.setState({ 
-                    geolocation: {
-                        lat: position.coords.latitude,
-                        lon: position.coords.longitude} 
-                });
-            }
-        );
-
-        if (this.state.units === 'metric') {
-            fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${this.state.geolocation.lat}&lon=${this.state.geolocation.lon}&units=metric&appid=${this.APIKey}`)
-            .then(res => res.json())
-            .then(json => {
-                this.setState({
-                    isLoaded: true,
-                    weather: json,
-                })
-            });
-        } else if (this.state.units === 'imperial') {
-            fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${this.state.geolocation.lat}&lon=${this.state.geolocation.lon}&units=imperial&appid=${this.APIKey}`)
-            .then(res => res.json())
-            .then(json => {
-                this.setState({
-                    isLoaded: true,
-                    weather: json,
-                })
-            });
-        } else {
-            fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${this.state.geolocation.lat}&lon=${this.state.geolocation.lon}&appid=${this.APIKey}`)
-            .then(res => res.json())
-            .then(json => {
-                this.setState({
-                    isLoaded: true,
-                    weather: json,
-                })
-            });
-        }
-
-         
-        // Checks if we have any geolocation or not and executes API call with coordinates if there is any otherwise defaults to Stockholm.
-        if (this.state.geolocation.lat != null || this.state.geolocation.lon != null) {
-            if (this.state.units === 'metric') {
-                fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${this.state.geolocation.lat}&lon=${this.state.geolocation.lon}&units=metric&appid=${this.APIKey}`)
-                .then(res => res.json())
-                .then(json => {
-                    this.setState({
-                        isLoaded: true,
-                        weather: json,
-                    })
-                });
-            } else if (this.state.units === 'imperial') {
-                fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${this.state.geolocation.lat}&lon=${this.state.geolocation.lon}&units=imperial&appid=${this.APIKey}`)
-                .then(res => res.json())
-                .then(json => {
-                    this.setState({
-                        isLoaded: true,
-                        weather: json,
-                    })
-                });
-            } else {
-                fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${this.state.geolocation.lat}&lon=${this.state.geolocation.lon}&appid=${this.APIKey}`)
-                .then(res => res.json())
-                .then(json => {
-                    this.setState({
-                        isLoaded: true,
-                        weather: json,
-                    })
-                });
-            }  
-        } else if (this.state.geolocation.lat === null || this.state.geolocation.lon === null) {
-            // Checks what units we want to use and then executes API call with those units.
-                if (this.state.units === 'metric') {
-                    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&units=metric&appid=${this.APIKey}`)
-                    .then(res => res.json())
-                    .then(json => {
-                        this.setState({
-                            isLoaded: true,
-                            weather: json,
-                        })
-                    });
-                } else if (this.state.units === 'imperial') {
-                    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&units=imperial&appid=${this.APIKey}`)
-                    .then(res => res.json())
-                    .then(json => {
-                        // If API call works then sets isLoaded to true so we know it's done and stores the result of API call in weather.
-                        this.setState({
-                            isLoaded: true,
-                            weather: json,
-                        })
-                    });
-                } else {
-                    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&appid=${this.APIKey}`)
-                    .then(res => res.json())
-                    .then(json => {
-                        this.setState({
-                            isLoaded: true,
-                            weather: json,
-                        })
-                    });
-            }  
-        }  
-        */   
