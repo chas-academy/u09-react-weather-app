@@ -1,9 +1,10 @@
-import React from 'react'
-var moment = require('moment');
+import React from 'react';
+
 
 export default function UserLocation(props) {
 
-    const { temperature, description, location, region, country, wind_speed, sunrise, sunset, humidity, } = props.weatherData;
+
+    const { temperature, description, location, country, wind_speed, sunrise, sunset, humidity, } = props.weatherData;
 
 
     return (
@@ -13,7 +14,7 @@ export default function UserLocation(props) {
                     <h1>{temperature}<sup>o</sup>C<br></br>{description}</h1>
                     <h4>{location}, {country}</h4>
                 </div>
-            </div>
+            
             <br></br>
 
             <div className="row">
@@ -39,7 +40,7 @@ export default function UserLocation(props) {
                     <p><b>Humidity</b>(%)</p>
                     <h2>{humidity}</h2>
                 </div>
-
+                </div>
             </div>
         </div>
     )
