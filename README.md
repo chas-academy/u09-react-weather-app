@@ -4,12 +4,12 @@
 Openweathermaps
 
 ## TO DO
-- Start with API Call (Emil)(Done for Forecast component).
+- Start with API Call (Emil).
 - Convert to Celcius or Fahrenheit depending on state (Includes automa from API).
 - Figure out Geolocation (Viktor).
 
 ## Components
-- Header (Includes h1 with heading for site and button to change units (C/F) in.)
+- Header (Fahrenheit or Celcius)
 - Current weather
 - Forecast
 
