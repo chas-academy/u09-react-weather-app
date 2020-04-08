@@ -18,7 +18,7 @@ export default function UserLocation(props) {
             <br></br>
 
             <div className="row">
-                <div className="col-md-3 text-center">
+                <div className="col-md-3 mt-4 text-center">
                     <p><b>Wind Force</b>(km/hr)</p>
                     <h2>{wind_speed}</h2>
                 </div>
