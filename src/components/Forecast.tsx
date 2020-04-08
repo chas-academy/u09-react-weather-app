@@ -48,7 +48,6 @@ class Forecast extends Component <{}, forecastState> {
       }
 
     getWeather = async (latitude: any, longitude: any) => {
-
         if (longitude != null || latitude != null) {
             if (this.state.units === 'metric') {
                 const api_call = await
@@ -68,7 +67,7 @@ class Forecast extends Component <{}, forecastState> {
                     isLoaded: true
                     })
                 console.log('data is: ', data.list);
-            } else if (longitude === null || latitude === null) {
+            } else {
                 const api_call = await
                 fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${this.APIKey}`);
                 const data = await api_call.json();
@@ -80,15 +79,35 @@ class Forecast extends Component <{}, forecastState> {
             } 
             
         } else {
-            console.log("Does work");
-            const api_call = await
-            fetch(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&units=metric&appid=${this.APIKey}`);
-            const data = await api_call.json();
-            this.setState({
-                weather: data,
-                isLoaded: true
-                })
-            console.log('data is: ', data.list);
+            if (this.state.units === 'metric') {
+                const api_call = await
+                fetch(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&units=metric&appid=${this.APIKey}`);
+                const data = await api_call.json();
+                this.setState({
+                    weather: data,
+                    isLoaded: true
+                    })
+                console.log('data is: ', data.list);
+            } else if (this.state.units === 'imperial') {
+                const api_call = await
+                fetch(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&units=imperial&appid=${this.APIKey}`);
+                const data = await api_call.json();
+                this.setState({
+                    weather: data,
+                    isLoaded: true
+                    })
+                console.log('data is: ', data.list);
+            } else {
+                const api_call = await
+                fetch(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&appid=${this.APIKey}`);
+                const data = await api_call.json();
+                this.setState({
+                    weather: data,
+                    isLoaded: true
+                    })
+                console.log('data is: ', data.list);
+            }
+            
         }
       
     }
