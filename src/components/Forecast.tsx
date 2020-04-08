@@ -99,24 +99,43 @@ class Forecast extends Component <{}, forecastState> {
             units = 'F';
         }
 
-        var date = new Date();
-        var year: any = date.getFullYear();
-        var month: any = date.getMonth() + 1;
-        var day: any = date.getDate();
+       function getDate(date: any) {
+            var mm = date.getMonth() + 1; // getMonth() is zero-based
+            var dd = date.getDate();
+      
+            return [date.getFullYear(),
+                (mm>9 ? '' : '0') + mm,
+                (dd>9 ? '' : '0') + dd
+               ].join('-');
+        };
+      
+        var today: any = new Date();
+        today = getDate(today);
+
+        var tomorrow: any = new Date(today)
+        tomorrow.setDate(tomorrow.getDate() + 1)
+        tomorrow = getDate(tomorrow);
+
         
-        if (day < 10) {
-             day = `${0}${day}`;
-        } 
-        
-        if (month < 10) {
-            month = `${0}${month}`;
-        }
-        
-        var today = year + '-' + month + '-' + day;
+        var day3: any = new Date(today)
+        day3.setDate(day3.getDate() + 2)
+        day3 = getDate(day3);
+
+        var day4: any = new Date(today)
+        day4.setDate(day4.getDate() + 3)
+        day4 = getDate(day4);
+
+        var day5: any = new Date(today)
+        day5.setDate(day5.getDate() + 4)
+        day5 = getDate(day5);
 
 
-        var day1: any = weather.list.filter((time: any) => time.dt_txt.includes(today));
-        var day2: any = weather.list.filter((time: any) => time.dt_txt.includes(today + 1));
+        today = weather.list.filter((time: any) => time.dt_txt.includes(today));
+        tomorrow = weather.list.filter((time: any) => time.dt_txt.includes(tomorrow));
+        day3 = weather.list.filter((time: any) => time.dt_txt.includes(day3));
+        day4 = weather.list.filter((time: any) => time.dt_txt.includes(day4));
+        day5 = weather.list.filter((time: any) => time.dt_txt.includes(day5));
+
 
         // Checks if page is loaded or not and renders out the weather if is loaded and renders just a loading screen if not/until loaded.
         if (!isLoaded) {
@@ -129,13 +148,35 @@ class Forecast extends Component <{}, forecastState> {
                 <div className="Forecast">
                     <h2>{weather.city.name}, {weather.city.country}</h2>
                     <h4>5 day forecast</h4>
-                    {day1.map((hour: Hour, i: number) => (
+                    {today.map((hour: Hour, i: number) => (
                             <p key={i}>
                                 {hour.dt_txt} | {hour.main.temp}° {units}
                             </p>
                         ))}
-
-                        {day2.map((hour: Hour, i: number) => (
+                        <hr/>
+                        <br/>
+                        {tomorrow.map((hour: Hour, i: number) => (
+                            <p key={i}>
+                                {hour.dt_txt} | {hour.main.temp}° {units}
+                            </p>
+                        ))}
+                        <hr/>
+                        <br/>
+                        {day3.map((hour: Hour, i: number) => (
+                            <p key={i}>
+                                {hour.dt_txt} | {hour.main.temp}° {units}
+                            </p>
+                        ))}
+                        <hr/>
+                        <br/>
+                        {day4.map((hour: Hour, i: number) => (
+                            <p key={i}>
+                                {hour.dt_txt} | {hour.main.temp}° {units}
+                            </p>
+                        ))}
+                        <hr/>
+                        <br/>
+                        {day5.map((hour: Hour, i: number) => (
                             <p key={i}>
                                 {hour.dt_txt} | {hour.main.temp}° {units}
                             </p>
