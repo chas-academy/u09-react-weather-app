@@ -1,28 +1,21 @@
-import React, { Fragment} from 'react';
-import axios from 'axios';
-import Days from './days/days';
+import React from 'react';
 import Header from './components/Header';
+import Card from './components/Card';
 import Forecast from './components/Forecast';
+
 
 export default class App extends React.Component {
 
-  componentDidMount (){
-    // Get device location
-    if(navigator.geolocation){
-      
-    }else{
-      console.log('Not Supported');
-    }
-  }
 
 
   render(){
     return(
       <main >
-      <Header/>
-      <section className = "d-flex flex-row justify-content-center">
-        <Forecast/>
-      </section>
+        <Header />
+        <Card />
+        <Forecast />
+        <section className="d-flex flex-row justify-content-center">
+        </section>
       </main>
     );
   }
