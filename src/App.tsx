@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from './components/Header';
 import Card from './components/Card';
+import Forecast from './components/Forecast';
 
 
 export default class App extends React.Component {
@@ -12,6 +13,7 @@ export default class App extends React.Component {
       <main >
         <Header />
         <Card />
+        <Forecast />
         <section className="d-flex flex-row justify-content-center">
         </section>
       </main>
