@@ -47,6 +47,7 @@ class Forecast extends Component <{}, forecastState> {
         });
       }
 
+
     getWeather = async (latitude: any, longitude: any) => {
         if (longitude != null || latitude != null) {
             if (this.state.units === 'metric') {
@@ -105,6 +106,7 @@ class Forecast extends Component <{}, forecastState> {
                     weather: data,
                     isLoaded: true
                     })
+
                 console.log('data is: ', data.list);
             }
             
