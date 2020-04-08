@@ -1,6 +1,7 @@
 import React from 'react';
 import Axios from 'axios';
 import UserLocation from './UserLocation';
+import { usePosition } from 'use-position';
 var moment = require('moment');
 
 export default class Card extends React.Component {
