@@ -48,14 +48,35 @@ class Forecast extends Component <{}, forecastState> {
 
     getWeather = async (latitude: any, longitude: any) => {
         if (latitude != null || longitude != null) {
-            const api_call = await
-            fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${this.APIKey}&units=metric`);
-            const data = await api_call.json();
-            this.setState({
-                weather: data,
-                isLoaded: true
-                })
-            console.log('data is: ', data.list);  //this is the good stuff
+            if (this.state.units === 'metric') {
+                const api_call = await
+                fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${this.APIKey}&units=metric`);
+                const data = await api_call.json();
+                this.setState({
+                    weather: data,
+                    isLoaded: true
+                    })
+                console.log('data is: ', data.list);
+            } else if (this.state.units === 'imperial') {
+                const api_call = await
+                fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${this.APIKey}&units=imperial`);
+                const data = await api_call.json();
+                this.setState({
+                    weather: data,
+                    isLoaded: true
+                    })
+                console.log('data is: ', data.list);
+            } else {
+                const api_call = await
+                fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${this.APIKey}`);
+                const data = await api_call.json();
+                this.setState({
+                    weather: data,
+                    isLoaded: true
+                    })
+                console.log('data is: ', data.list);
+            } 
+            
         } else if (latitude === null || longitude === null) {
             const api_call = await
             fetch(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&units=metric&appid=${this.APIKey}`);
@@ -64,7 +85,7 @@ class Forecast extends Component <{}, forecastState> {
                 weather: data,
                 isLoaded: true
                 })
-            console.log('data is: ', data.list);  //this is the good stuff
+            console.log('data is: ', data.list);
         }
       
     }
@@ -145,42 +166,46 @@ class Forecast extends Component <{}, forecastState> {
             console.log(weather);
             console.log(today);
             return (
-                <div className="Forecast">
+                <div className="Forecast d-flex flex-column align-items-center">
                     <h2>{weather.city.name}, {weather.city.country}</h2>
                     <h4>5 day forecast</h4>
-                    {today.map((hour: Hour, i: number) => (
-                            <p key={i}>
-                                {hour.dt_txt} | {hour.main.temp}° {units}
-                            </p>
-                        ))}
-                        <hr/>
-                        <br/>
-                        {tomorrow.map((hour: Hour, i: number) => (
-                            <p key={i}>
-                                {hour.dt_txt} | {hour.main.temp}° {units}
-                            </p>
-                        ))}
-                        <hr/>
-                        <br/>
-                        {day3.map((hour: Hour, i: number) => (
-                            <p key={i}>
-                                {hour.dt_txt} | {hour.main.temp}° {units}
-                            </p>
-                        ))}
-                        <hr/>
-                        <br/>
-                        {day4.map((hour: Hour, i: number) => (
-                            <p key={i}>
-                                {hour.dt_txt} | {hour.main.temp}° {units}
-                            </p>
-                        ))}
-                        <hr/>
-                        <br/>
-                        {day5.map((hour: Hour, i: number) => (
-                            <p key={i}>
-                                {hour.dt_txt} | {hour.main.temp}° {units}
-                            </p>
-                        ))}
+                    <div className="row">
+                        <div className="col-md-2">
+                            {today.map((hour: Hour, i: number) => (
+                                    <p key={i}>
+                                        {hour.dt_txt} | {Math.floor(hour.main.temp)}° {units}
+                                    </p>
+                                ))}
+                        </div>
+                        <div className="col-md-2">
+                            {tomorrow.map((hour: Hour, i: number) => (
+                                <p key={i}>
+                                    {hour.dt_txt} | {Math.floor(hour.main.temp)}° {units}
+                                </p>
+                            ))}
+                        </div>
+                        <div className="col-md-2">
+                            {day3.map((hour: Hour, i: number) => (
+                                <p key={i}>
+                                    {hour.dt_txt} | {Math.floor(hour.main.temp)}° {units}
+                                </p>
+                            ))}
+                        </div>
+                        <div className="col-md-2">
+                            {day4.map((hour: Hour, i: number) => (
+                                <p key={i}>
+                                    {hour.dt_txt} | {Math.floor(hour.main.temp)}° {units}
+                                </p>
+                            ))}
+                        </div>
+                        <div className="col-md-2">
+                            {day5.map((hour: Hour, i: number) => (
+                                <p key={i}>
+                                    {hour.dt_txt} | {Math.floor(hour.main.temp)}° {units}
+                                </p>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             )
         }
