@@ -150,35 +150,35 @@ class Forecast extends Component <{}, forecastState> {
                     <h4>5 day forecast</h4>
                     {today.map((hour: Hour, i: number) => (
                             <p key={i}>
-                                {hour.dt_txt} | {hour.main.temp}° {units}
+                                {hour.dt_txt} | {Math.floor(hour.main.temp)}° {units}
                             </p>
                         ))}
                         <hr/>
                         <br/>
                         {tomorrow.map((hour: Hour, i: number) => (
                             <p key={i}>
-                                {hour.dt_txt} | {hour.main.temp}° {units}
+                                {hour.dt_txt} | {Math.floor(hour.main.temp)}° {units}
                             </p>
                         ))}
                         <hr/>
                         <br/>
                         {day3.map((hour: Hour, i: number) => (
                             <p key={i}>
-                                {hour.dt_txt} | {hour.main.temp}° {units}
+                                {hour.dt_txt} | {Math.floor(hour.main.temp)}° {units}
                             </p>
                         ))}
                         <hr/>
                         <br/>
                         {day4.map((hour: Hour, i: number) => (
                             <p key={i}>
-                                {hour.dt_txt} | {hour.main.temp}° {units}
+                                {hour.dt_txt} | {Math.floor(hour.main.temp)}° {units}
                             </p>
                         ))}
                         <hr/>
                         <br/>
                         {day5.map((hour: Hour, i: number) => (
                             <p key={i}>
-                                {hour.dt_txt} | {hour.main.temp}° {units}
+                                {hour.dt_txt} | {Math.floor(hour.main.temp)}° {units}
                             </p>
                         ))}
                 </div>
