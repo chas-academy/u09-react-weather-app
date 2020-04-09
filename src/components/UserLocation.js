@@ -9,7 +9,7 @@ export default function UserLocation(props) {
 
     return (
         <div>
-            <div className="row card mt-3 bg-light text-center">
+            <div className="container mt-3 bg-light text-center">
                 <div className="mt-4">
                     <h1>{temperature}<sup>o</sup>C<br></br>{description}</h1>
                     <h4>{location}, {country}</h4>
