@@ -3,10 +3,9 @@ import 'weather-icons/css/weather-icons.css';
 
 export default function UserLocation(props) {
 
-    
+
     const { temperature, description, location, country, wind_speed, sunrise, sunset, humidity, icon } = props.weatherData;
     
-
 
     const weatherIcon = {
       Thunderstorm: "wi-thunderstorm",
@@ -18,8 +17,6 @@ export default function UserLocation(props) {
       Clouds: "wi-day-fog"
     };
 
-    
-
 
     return (
         <div>
@@ -27,7 +24,7 @@ export default function UserLocation(props) {
                 <div className="container d-flex col-3 text-center mt-4">
                     <h1 className="display-4">{temperature}<sup>o</sup>C <br>
                     </br>{description}</h1> 
-                        <i className= {`wi ${weatherIcon[icon]} container display-1`}></i>
+                        <i class= {`wi ${weatherIcon[icon]} container display-1`}></i>
                 </div>
                     <h4 className="display-5">{location}, {country}</h4>
             <br></br>

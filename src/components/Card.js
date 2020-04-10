@@ -38,12 +38,11 @@ export default class Card extends React.Component {
           Axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${currenComponent.state.coords.latitude}&lon=${currenComponent.state.coords.longitude}&units=metric&appid=5a274b56354a707ffc91ac0c8eec0c72`)
             .then(res => {
               console.log(res);
-
               let weatherData = {
                 location: res.data.city.name,
                 country: res.data.city.country,
                 temperature: Math.floor(res.data.list[0].main.temp),
-                description: res.data.list[0].weather[0],
+                description: res.data.list[0].weather[0].main,
                 wind_speed: res.data.list[0].wind.speed,
                 humidity: res.data.list[0].main.humidity,
                 sunrise: moment.unix(res.data.city.sunrise).format("HH:MM"),
@@ -108,7 +107,7 @@ export default class Card extends React.Component {
               icon: res.data.list[0].weather[0].main,
               str: res.data.list[0].weather[0].description,
             }
-
+            
             currenComponent.setState({ data: weatherData });
 
             get_WeatherIcon(weatherData.icon, res.data.list[0].weather[0].id);
