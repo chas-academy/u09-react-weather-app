@@ -91,7 +91,7 @@ export default class Card extends React.Component {
         console.log("No Granted");
 
         console.log('Geolocation Not Supported')
-        Axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=toronto&units=metric&appid=5a274b56354a707ffc91ac0c8eec0c72`)
+        Axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&units=metric&appid=5a274b56354a707ffc91ac0c8eec0c72`)
           .then(res => {
 
             console.log(res);
