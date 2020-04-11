@@ -31,26 +31,26 @@ export default function UserLocation(props) {
 
             <div className="row">
                 <div className="col-md-3 mt-4 text-center">
-                    <p><b>Wind Force</b>(km/hr)</p>
-                    <h2>{wind_speed}</h2>
+                    <p><b>Wind Force</b></p>
+                    <h2>{wind_speed} km/hr</h2>
                 </div>
 
                 <div className="col-md-3 text-center">
                     <br></br>
-                    <p><b>Sunrise</b>(millibar)</p>
+                    <p><b>Sunrise</b></p>
                     <h2>{sunrise}</h2>
                 </div>
 
                 <div className="col-md-3 text-center">
                     <br></br>
-                    <p><b>Sunset</b>(mm)</p>
+                    <p><b>Sunset</b></p>
                     <h2>{sunset}</h2>
                 </div>
 
                 <div className="col-md-3 text-center">
                     <br></br>
-                    <p><b>Humidity</b>(%)</p>
-                    <h2>{humidity}</h2>
+                    <p><b>Humidity</b></p>
+                    <h2>{humidity}%</h2>
                 </div>
                 </div>
             </div>
