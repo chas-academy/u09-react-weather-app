@@ -190,8 +190,7 @@ class Forecast extends Component <{}, forecastState> {
         } else {
             // Console logs weather for debugging purpose.
             return (
-                <div className="Forecast d-flex flex-column align-items-center container">
-                    <h2>{weather.city.name}, {weather.city.country}</h2>
+                <div className="mt-2 d-flex flex-column align-items-center container">
                     <h4>5 day forecast</h4>
                     <div className="row d-flex align-items-start justify-content-around">
                         <div className="col-md border border-dark rounded">
