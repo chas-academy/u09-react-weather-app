@@ -17,7 +17,8 @@
     "react-dom": "^16.13.1",
     "react-moment": "^0.9.7",
     "react-scripts": "3.4.1",
-    "typescript": "^3.7.5"
+    "typescript": "^3.7.5",
+    "weather-icons": "git+https://github.com/erikflowers/weather-icons.git"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -20,11 +20,12 @@ class Forecast extends Component <{}, forecastState> {
 
     // Emil API Key, can be switched out to your own.
     private APIKey = '5a274b56354a707ffc91ac0c8eec0c72';
-
+    
     // Constructs class with default values to render page with.
     constructor(props: any) {
         super(props);
         this.state = {
+            
             weather: {
                 list: [
                      {
@@ -33,7 +34,7 @@ class Forecast extends Component <{}, forecastState> {
                 ]
             },
             isLoaded: false,
-            units: 'metric',
+            units: 'imperial',
             geolocation: {
                 lat: null,
                 lon: null
@@ -49,6 +50,7 @@ class Forecast extends Component <{}, forecastState> {
 
 
     getWeather = async (latitude: any, longitude: any) => {
+        
         if (longitude != null || latitude != null) {
             if (this.state.units === 'metric') {
                 const api_call = await
