@@ -18,6 +18,8 @@
     "react-moment": "^0.9.7",
     "react-scripts": "3.4.1",
     "typescript": "^3.7.5",
+    "use-async-effect": "^2.2.2",
+    "use-position": "0.0.6",
     "weather-icons": "git+https://github.com/erikflowers/weather-icons.git"
   },
   "scripts": {
@@ -40,5 +42,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/use-position": "0.0.0"
   }
 }
