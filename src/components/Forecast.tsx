@@ -196,7 +196,7 @@ class Forecast extends Component<{}, forecastState> {
                     <h2>{weather.city.name}, {weather.city.country}</h2>
                     <h4>5 day forecast</h4>
                     <div className="row d-flex align-items-start justify-content-around">
-                        {h >= 21 ? <div className="col-md border border-dark rounded">
+                        {h <= 21  ? <div className="col-md border border-dark rounded">
                             <h5>Date: {today[0].dt_txt.slice(0, 10)}</h5>
                             {today.map((hour: Hour, i: number) => (
                                 <div key={i}>

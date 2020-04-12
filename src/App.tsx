@@ -13,6 +13,7 @@ export default class App extends React.Component {
     return (
       <main >
         <Header />
+       
         <Card />
         <Forecast />
         <section className="d-flex flex-row justify-content-center">
