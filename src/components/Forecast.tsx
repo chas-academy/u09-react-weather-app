@@ -16,7 +16,7 @@ interface Hour {
     dt_txt: string
 }
 
-class Forecast extends Component <{}, forecastState> {
+class Forecast extends Component<{}, forecastState> {
 
     // Emil API Key, can be switched out to your own.
     private APIKey = '5a274b56354a707ffc91ac0c8eec0c72';
@@ -25,15 +25,16 @@ class Forecast extends Component <{}, forecastState> {
     constructor(props: any) {
         super(props);
         this.state = {
+
             weather: {
                 list: [
-                     {
+                    {
                         dt_txt: ""
                     }
                 ]
             },
             isLoaded: false,
-            units: 'metric',
+            units: 'imperial',
             geolocation: {
                 lat: null,
                 lon: null
@@ -43,99 +44,102 @@ class Forecast extends Component <{}, forecastState> {
 
     getPosition = () => {
         return new Promise((resolve, reject) => {
-          navigator.geolocation.getCurrentPosition(resolve, reject);
+            navigator.geolocation.getCurrentPosition(resolve, reject);
         });
-      }
+    }
 
 
     getWeather = async (latitude: any, longitude: any) => {
+
         if (longitude != null || latitude != null) {
             if (this.state.units === 'metric') {
                 const api_call = await
-                fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${this.APIKey}&units=metric`);
+                    fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${this.APIKey}&units=metric`);
                 const data = await api_call.json();
                 this.setState({
                     weather: data,
                     isLoaded: true
-                    })
+                })
                 console.log('data is: ', data.list);
             } else if (this.state.units === 'imperial') {
                 const api_call = await
-                fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${this.APIKey}&units=imperial`);
+                    fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${this.APIKey}&units=imperial`);
                 const data = await api_call.json();
                 this.setState({
                     weather: data,
                     isLoaded: true
-                    })
+                })
                 console.log('data is: ', data.list);
             } else {
                 const api_call = await
-                fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${this.APIKey}`);
+                    fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${this.APIKey}`);
                 const data = await api_call.json();
                 this.setState({
                     weather: data,
                     isLoaded: true
-                    })
+                })
                 console.log('data is: ', data);
-            } 
-            
+            }
+
         } else {
             if (this.state.units === 'metric') {
                 const api_call = await
-                fetch(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&units=metric&appid=${this.APIKey}`);
+                    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&units=metric&appid=${this.APIKey}`);
                 const data = await api_call.json();
                 this.setState({
                     weather: data,
                     isLoaded: true
-                    })
+                })
                 console.log('data is: ', data.list);
             } else if (this.state.units === 'imperial') {
                 const api_call = await
-                fetch(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&units=imperial&appid=${this.APIKey}`);
+                    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&units=imperial&appid=${this.APIKey}`);
                 const data = await api_call.json();
                 this.setState({
                     weather: data,
                     isLoaded: true
-                    })
+                })
                 console.log('data is: ', data.list);
             } else {
                 const api_call = await
-                fetch(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&appid=${this.APIKey}`);
+                    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&appid=${this.APIKey}`);
                 const data = await api_call.json();
                 this.setState({
                     weather: data,
                     isLoaded: true
-                    })
+                })
 
                 console.log('data is: ', data.list);
             }
-            
+
         }
-      
+
     }
 
     // Function activates when component is rendered.
     componentDidMount() {
-        
+
         this.getPosition()
             .then((position: any) => {
-                            this.getWeather(
-                                position.coords.latitude,     
-                                position.coords.longitude)
-                            }
+                this.getWeather(
+                    position.coords.latitude,
+                    position.coords.longitude)
+            }
             )
             .catch(() => {
                 this.getWeather(null, null)
-                .then(() => console.log("Error: User denied location, defaulting to Berlin."))
-                });
-   }
+                    .then(() => console.log("Error: User denied location, defaulting to Berlin."))
+            });
+    }
 
-   // Function that renders the component.
+    // Function that renders the component.
     render() {
 
         // Defines variables for function.
         var { isLoaded, weather } = this.state;
         var units = 'K';
+        var d = new Date();
+        var h = d.getHours();
 
         // Checks what units we're using to display correct letter after the degrees.
         if (this.state.units === 'metric') {
@@ -144,16 +148,16 @@ class Forecast extends Component <{}, forecastState> {
             units = 'F';
         }
 
-       function getDate(date: any) {
+        function getDate(date: any) {
             var mm = date.getMonth() + 1; // getMonth() is zero-based
             var dd = date.getDate();
-      
+
             return [date.getFullYear(),
-                (mm>9 ? '' : '0') + mm,
-                (dd>9 ? '' : '0') + dd
-               ].join('-');
+            (mm > 9 ? '' : '0') + mm,
+            (dd > 9 ? '' : '0') + dd
+            ].join('-');
         };
-      
+
         var today: any = new Date();
         today = getDate(today);
 
@@ -161,7 +165,7 @@ class Forecast extends Component <{}, forecastState> {
         tomorrow.setDate(tomorrow.getDate() + 1)
         tomorrow = getDate(tomorrow);
 
-        
+
         var day3: any = new Date(today)
         day3.setDate(day3.getDate() + 2)
         day3 = getDate(day3);
@@ -192,23 +196,23 @@ class Forecast extends Component <{}, forecastState> {
                     <h2>{weather.city.name}, {weather.city.country}</h2>
                     <h4>5 day forecast</h4>
                     <div className="row d-flex align-items-start justify-content-around">
-                        <div className="col-md border border-dark rounded">
+                        {h <= 21  ? <div className="col-md border border-dark rounded">
                             <h5>Date: {today[0].dt_txt.slice(0, 10)}</h5>
                             {today.map((hour: Hour, i: number) => (
                                 <div key={i}>
                                     <p>Time: {hour.dt_txt.slice(11)}</p>
                                     <p>Temp: {Math.floor(hour.main.temp)}° {units}</p>
-                                    <hr/>
+                                    <hr />
                                 </div>
                             ))}
-                        </div>
+                        </div> : <div>No More Data Today</div>}
                         <div className="col-md border border-dark rounded">
                             <h5>Date: {tomorrow[0].dt_txt.slice(0, 10)}</h5>
                             {tomorrow.map((hour: Hour, i: number) => (
                                 <div key={i}>
                                     <p>Time: {hour.dt_txt.slice(11)}</p>
                                     <p>Temp: {Math.floor(hour.main.temp)}° {units}</p>
-                                    <hr/>
+                                    <hr />
                                 </div>
                             ))}
                         </div>
@@ -218,7 +222,7 @@ class Forecast extends Component <{}, forecastState> {
                                 <div key={i}>
                                     <p>Time: {hour.dt_txt.slice(11)}</p>
                                     <p>Temp: {Math.floor(hour.main.temp)}° {units}</p>
-                                    <hr/>
+                                    <hr />
                                 </div>
                             ))}
                         </div>
@@ -228,7 +232,7 @@ class Forecast extends Component <{}, forecastState> {
                                 <div key={i}>
                                     <p>Time: {hour.dt_txt.slice(11)}</p>
                                     <p>Temp: {Math.floor(hour.main.temp)}° {units}</p>
-                                    <hr/>
+                                    <hr />
                                 </div>
                             ))}
                         </div>
@@ -238,7 +242,7 @@ class Forecast extends Component <{}, forecastState> {
                                 <div key={i}>
                                     <p>Time: {hour.dt_txt.slice(11)}</p>
                                     <p>Temp: {Math.floor(hour.main.temp)}° {units}</p>
-                                    <hr/>
+                                    <hr />
                                 </div>
                             ))}
                         </div>
@@ -247,7 +251,7 @@ class Forecast extends Component <{}, forecastState> {
             )
         }
 
-        
+
     }
 }
 
