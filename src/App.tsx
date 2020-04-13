@@ -9,13 +9,13 @@ export default class App extends React.Component {
 
 
 
-  render(){
-    return(
+  render() {
+    return (
       <main >
-     
-       <MainCard />
-     
-      
+        <Header />
+       
+        <Card />
+        <Forecast />
         <section className="d-flex flex-row justify-content-center">
         </section>
       </main>
