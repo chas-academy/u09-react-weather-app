@@ -12,10 +12,10 @@ export default class App extends React.Component {
   render(){
     return(
       <main >
-        <Header />
-       
-        <Card />
-        <Forecast />
+     
+       <MainCard />
+     
+      
         <section className="d-flex flex-row justify-content-center">
         </section>
       </main>
