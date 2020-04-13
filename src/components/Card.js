@@ -5,7 +5,7 @@ import UserLocation from './UserLocation';
 var moment = require('moment');
 
 export default class Card extends React.Component {
-
+  
   state = {
     coords: {
       latitude: null,
