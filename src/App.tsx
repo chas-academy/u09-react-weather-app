@@ -8,7 +8,6 @@ interface AppInterface {
   units: string
 }
 
-
 export default class App extends React.Component<{}, AppInterface> {
 
   constructor(props: any) {
@@ -25,7 +24,6 @@ export default class App extends React.Component<{}, AppInterface> {
   }
 
   render() {
-    console.log(this.state.units);
     return (
         <main >
           <Header unitChanger={this.unitChanger.bind(this)}

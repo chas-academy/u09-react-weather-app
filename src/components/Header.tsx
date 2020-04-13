@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
 
-class Header extends Component {
+interface HeaderProps {
+    unitChanger: any,
+    units: string
+}
+
+class Header extends Component<HeaderProps> {
     
-    constructor(props) {
+    constructor(props: any) {
         super(props);
     }
     

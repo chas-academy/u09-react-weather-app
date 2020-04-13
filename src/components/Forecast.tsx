@@ -1,13 +1,23 @@
 import React, { Component } from 'react';
 
+interface ForecastProps {
+    units: string
+}
 
-class Forecast extends Component {
+interface ForecastState {
+    weather: any,
+    isLoaded: boolean,
+    units: string,
+    geolocation: object
+}
+
+class Forecast extends Component<ForecastProps, ForecastState> {
 
     // Emil API Key, can be switched out to your own.
     APIKey = '5a274b56354a707ffc91ac0c8eec0c72';
 
     // Constructs class with default values to render page with.
-    constructor(props) {
+    constructor(props: ForecastProps) {
         super(props);
         this.state = {
 
@@ -34,7 +44,7 @@ class Forecast extends Component {
     }
 
 
-    getWeather = async (latitude, longitude) => {
+    getWeather = async (latitude: number | null, longitude: number | null) => {
 
 
         if (longitude != null || latitude != null) {
@@ -101,7 +111,7 @@ class Forecast extends Component {
     componentDidMount() {
 
         this.getPosition()
-            .then((position) => {
+            .then((position: any) => {
                 this.getWeather(
                     position.coords.latitude,
                     position.coords.longitude)
@@ -121,7 +131,7 @@ class Forecast extends Component {
                 units: this.props.units
             })
             this.getPosition()
-            .then((position) => {
+            .then((position: any) => {
                 this.getWeather(
                     position.coords.latitude,
                     position.coords.longitude)
@@ -146,7 +156,7 @@ class Forecast extends Component {
             units = 'F';
         }
 
-        function getDate(date) {
+        function getDate(date: Date) {
             var mm = date.getMonth() + 1; // getMonth() is zero-based
             var dd = date.getDate();
 
@@ -156,32 +166,32 @@ class Forecast extends Component {
             ].join('-');
         };
 
-        var today = new Date();
+        var today: any = new Date();
         today = getDate(today);
 
-        var tomorrow = new Date(today)
+        var tomorrow: any = new Date(today)
         tomorrow.setDate(tomorrow.getDate() + 1)
         tomorrow = getDate(tomorrow);
 
 
-        var day3 = new Date(today)
+        var day3: any = new Date(today)
         day3.setDate(day3.getDate() + 2)
         day3 = getDate(day3);
 
-        var day4 = new Date(today)
+        var day4: any = new Date(today)
         day4.setDate(day4.getDate() + 3)
         day4 = getDate(day4);
 
-        var day5= new Date(today)
+        var day5: any = new Date(today)
         day5.setDate(day5.getDate() + 4)
         day5 = getDate(day5);
 
 
-        today = weather.list.filter((time) => time.dt_txt.includes(today));
-        tomorrow = weather.list.filter((time) => time.dt_txt.includes(tomorrow));
-        day3 = weather.list.filter((time) => time.dt_txt.includes(day3));
-        day4 = weather.list.filter((time) => time.dt_txt.includes(day4));
-        day5 = weather.list.filter((time) => time.dt_txt.includes(day5));
+        today = weather.list.filter((time: any) => time.dt_txt.includes(today));
+        tomorrow = weather.list.filter((time: any) => time.dt_txt.includes(tomorrow));
+        day3 = weather.list.filter((time: any) => time.dt_txt.includes(day3));
+        day4 = weather.list.filter((time: any) => time.dt_txt.includes(day4));
+        day5 = weather.list.filter((time: any) => time.dt_txt.includes(day5));
 
 
         // Checks if page is loaded or not and renders out the weather if is loaded and renders just a loading screen if not/until loaded.
@@ -196,7 +206,7 @@ class Forecast extends Component {
                     <div className="row d-flex align-items-start justify-content-around">
                         {h <= 21  ? <div className="col-md border border-dark rounded">
                             <h5>Date: {today[0].dt_txt.slice(0, 10)}</h5>
-                            {today.map((hour, i) => (
+                            {today.map((hour: any, i: number) => (
                                 <div key={i}>
                                     <p>Time: {hour.dt_txt.slice(11)}</p>
                                     <p>Temp: {Math.floor(hour.main.temp)}° {units}</p>
@@ -206,7 +216,7 @@ class Forecast extends Component {
                         </div> : <div>No More Data Today</div>}
                         <div className="col-md border border-dark rounded">
                             <h5>Date: {tomorrow[0].dt_txt.slice(0, 10)}</h5>
-                            {tomorrow.map((hour, i) => (
+                            {tomorrow.map((hour: any, i: number) => (
                                 <div key={i}>
                                     <p>Time: {hour.dt_txt.slice(11)}</p>
                                     <p>Temp: {Math.floor(hour.main.temp)}° {units}</p>
@@ -216,7 +226,7 @@ class Forecast extends Component {
                         </div>
                         <div className="col-md border border-dark rounded">
                             <h5>Date: {day3[0].dt_txt.slice(0, 10)}</h5>
-                            {day3.map((hour, i) => (
+                            {day3.map((hour: any, i: number) => (
                                 <div key={i}>
                                     <p>Time: {hour.dt_txt.slice(11)}</p>
                                     <p>Temp: {Math.floor(hour.main.temp)}° {units}</p>
@@ -226,7 +236,7 @@ class Forecast extends Component {
                         </div>
                         <div className="col-md border border-dark rounded">
                             <h5>Date: {day4[0].dt_txt.slice(0, 10)}</h5>
-                            {day4.map((hour, i) => (
+                            {day4.map((hour: any, i: number) => (
                                 <div key={i}>
                                     <p>Time: {hour.dt_txt.slice(11)}</p>
                                     <p>Temp: {Math.floor(hour.main.temp)}° {units}</p>
@@ -236,7 +246,7 @@ class Forecast extends Component {
                         </div>
                         <div className="col-md border border-dark rounded">
                             <h5>Date: {day5[0].dt_txt.slice(0, 10)}</h5>
-                            {day5.map((hour, i) => (
+                            {day5.map((hour: any, i: number) => (
                                 <div key={i}>
                                     <p>Time: {hour.dt_txt.slice(11)}</p>
                                     <p>Temp: {Math.floor(hour.main.temp)}° {units}</p>
