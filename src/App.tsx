@@ -4,21 +4,37 @@ import Card from './components/Card';
 import Forecast from './components/Forecast';
 //import { MainCard } from './components/MainCard';
 
+interface AppInterface {
+  units: string
+}
 
-export default class App extends React.Component {
 
+export default class App extends React.Component<{}, AppInterface> {
 
+  constructor(props: any) {
+    super(props);
+    this.state = {
+      units: 'metric'
+    }
+  }
+
+  unitChanger(e: any) {
+    this.setState({
+        units: e.target.value
+    })
+  }
 
   render() {
+    console.log(this.state.units);
     return (
-      <main >
-        <Header />
-       
-        <Card />
-        <Forecast />
-        <section className="d-flex flex-row justify-content-center">
-        </section>
-      </main>
+        <main >
+          <Header unitChanger={this.unitChanger.bind(this)}
+                  units={this.state.units}/>
+          <Card />
+          <Forecast units={this.state.units}/>
+          <section className="d-flex flex-row justify-content-center">
+          </section>
+        </main>
     );
   }
 }

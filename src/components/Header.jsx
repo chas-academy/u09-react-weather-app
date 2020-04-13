@@ -4,21 +4,7 @@ class Header extends Component {
     
     constructor(props) {
         super(props);
-        this.state = {
-            units: 'metric',
-            metric: "metric",
-            imperial: "imperial"
-        }
     }
-
-
-    unitChanger(e) {
-        console.log(e.target.value);
-        this.setState({
-            units: e.target.value
-        })
-    }
-
     
  
     render() {
@@ -27,8 +13,16 @@ class Header extends Component {
                 <header className = "text-center">
                     <h1>Weather App</h1>
                     <div className="btn-container">
-                        <button onClick={(e) => this.unitChanger(e)} value="metric">Celcius</button>
-                        <button onClick={(e) => this.unitChanger(e)} value="imperial">Fahrenheit</button>
+                            {this.props.units === "metric" ? 
+                            <div>
+                                <button onClick={(e) => this.props.unitChanger(e)} value="metric" className="btn btn-light">Celcius</button>
+                                <button onClick={(e) => this.props.unitChanger(e)} value="imperial" className="btn btn-dark">Fahrenheit</button>
+                            </div> :
+                            <div>
+                                <button onClick={(e) => this.props.unitChanger(e)} value="metric" className="btn btn-dark">Celcius</button>
+                                <button onClick={(e) => this.props.unitChanger(e)} value="imperial" className="btn btn-light">Fahrenheit</button>
+                            </div> }
+                            <p>{this.props.units}</p>              
                     </div>
                 </header>
             </article>
