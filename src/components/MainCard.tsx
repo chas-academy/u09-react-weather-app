@@ -19,30 +19,15 @@ export const MainCard = () => {
 
   useEffect(() => {
 
-    navigator.geolocation.watchPosition(function (position) {
-      let latitude = position.coords.latitude;
-      let longitude = position.coords.longitude;
+    navigator.geolocation.getCurrentPosition(function (position) {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
       console.log(latitude);
       console.log(longitude);
 
-      axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&units=metric&appid=5a274b56354a707ffc91ac0c8eec0c72`)
-        .then(res => setWeather({
-          location: res.data.city.name,
-          country: res.data.city.country,
-          temperature: Math.floor(res.data.list[0].main.temp),
-          description: res.data.list[0].weather[0].main,
-          wind_speed: res.data.list[0].wind.speed,
-          humidity: res.data.list[0].main.humidity,
-          sunrise: moment.unix(res.data.city.sunrise).format("HH:MM"),
-          sunset: moment.unix(res.data.city.sunset).format("HH:MM"),
-          icon: res.data.list[0].weather[0].main,
-        }))
-        .catch(err => {
-          console.log(err)
-        })
-
-      if (!navigator.geolocation) {
-        axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=35&lon=135&units=metric&appid=5a274b56354a707ffc91ac0c8eec0c72`)
+      if (navigator.geolocation) {
+        console.log("Geolocation")
+        axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&units=metric&appid=5a274b56354a707ffc91ac0c8eec0c72`)
           .then(res => setWeather({
             location: res.data.city.name,
             country: res.data.city.country,
@@ -54,11 +39,23 @@ export const MainCard = () => {
             sunset: moment.unix(res.data.city.sunset).format("HH:MM"),
             icon: res.data.list[0].weather[0].main,
           }))
-          .catch(err => {
-            console.log(err)
-          })
       }
+    }, function (error) {
+      console.log("No Geolocation")
+      axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=35&lon=135&units=metric&appid=5a274b56354a707ffc91ac0c8eec0c72`)
+        .then(res => setWeather({
+          location: res.data.city.name,
+          country: res.data.city.country,
+          temperature: Math.floor(res.data.list[0].main.temp),
+          description: res.data.list[0].weather[0].main,
+          wind_speed: res.data.list[0].wind.speed,
+          humidity: res.data.list[0].main.humidity,
+          sunrise: moment.unix(res.data.city.sunrise).format("HH:MM"),
+          sunset: moment.unix(res.data.city.sunset).format("HH:MM"),
+          icon: res.data.list[0].weather[0].main,
+        }))
     })
+
   }, [])
 
   return (
