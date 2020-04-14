@@ -72,7 +72,7 @@ export const MainCard = () => {
         <h4 className="display-5">{weather.location}, {weather.country}</h4>
         <br></br>
         <div className="btn-container">
-                    <button className = "btn btn-info "onClick={() => setUnits("metric")}>Celcius</button>
+                    <button className = "btn btn-info mr-2"onClick={() => setUnits("metric")}>Celcius</button>
                     <button className = "btn btn-info " onClick={() => setUnits("imperial")}>Fahrenheit</button>
                 </div>
 
