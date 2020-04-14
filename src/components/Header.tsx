@@ -7,11 +7,6 @@ interface HeaderProps {
 
 class Header extends Component<HeaderProps> {
     
-    constructor(props: any) {
-        super(props);
-    }
-    
- 
     render() {
         return (
             <article>
