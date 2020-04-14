@@ -64,7 +64,7 @@ export const MainCard = () => {
         <div className="container d-flex col-3 text-center mt-4">
           <h1 className="display-4 ">{weather.temperature}<sup>o</sup>C <br>
           </br>{weather.description}</h1>
-          <i className = {` owf owf-${weather.icon} owf-5x `}></i>
+          <i className = {` container display-1 owf owf-${weather.icon} owf-5x `}></i>
           {/*   <i className= {`wi ${weatherIcon[icon]} container display-1`}></i> */}
         </div>
         <h4 className="display-5">{weather.location}, {weather.country}</h4>
