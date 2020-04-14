@@ -12,7 +12,7 @@ export default class App extends React.Component<{}, AppInterface> {
   constructor(props: any) {
     super(props);
     this.state = {
-        units: 'metric'
+        units: 'metric',
       }
   }
 
