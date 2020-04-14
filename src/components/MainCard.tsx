@@ -17,6 +17,8 @@ export const MainCard = () => {
     icon: null,
   });
 
+  const [ units, setUnits ] = useState("metric");
+
   useEffect(() => {
 
     navigator.geolocation.getCurrentPosition(function (position) {
@@ -27,7 +29,7 @@ export const MainCard = () => {
 
       if (navigator.geolocation) {
         console.log("Geolocation")
-        axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&units=metric&appid=5a274b56354a707ffc91ac0c8eec0c72`)
+        axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&units=${units}&appid=5a274b56354a707ffc91ac0c8eec0c72`)
           .then(res => setWeather({
             location: res.data.city.name,
             country: res.data.city.country,
@@ -56,19 +58,23 @@ export const MainCard = () => {
         }))
     })
 
-  }, [])
+  }, [units])
 
   return (
     <div>
       <div className="container mt-3 bg-light text-center">
         <div className="container d-flex col-3 text-center mt-4">
-          <h1 className="display-4 ">{weather.temperature}<sup>o</sup>C <br>
+          <h1 className="display-4 ">{weather.temperature}<sup>o</sup> {(units == "metric" ? "C" : "F")} <br>
           </br>{weather.description}</h1>
           <i className = {` container display-1 owf owf-${weather.icon} owf-5x `}></i>
           {/*   <i className= {`wi ${weatherIcon[icon]} container display-1`}></i> */}
         </div>
         <h4 className="display-5">{weather.location}, {weather.country}</h4>
         <br></br>
+        <div className="btn-container">
+                    <button className = "btn btn-info "onClick={() => setUnits("metric")}>Celcius</button>
+                    <button className = "btn btn-info " onClick={() => setUnits("imperial")}>Fahrenheit</button>
+                </div>
 
         <div className="row">
           <div className="col-md-3 mt-4 text-center">
