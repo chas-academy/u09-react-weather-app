@@ -7,8 +7,8 @@ const Header = props => {
             <header className = "text-center">
                 <h1>Weather App</h1>
                 <div className="btn-container">
-                    <button className = "btn btn-info mr-2" onClick={(e) => {}}>Celcius</button>
-                    <button className = "btn btn-info ">Fahrenheit</button>
+                    <button className = "btn btn-info mr-2" onClick={(e) => props.unitChanger(e)} value="metric">Celcius</button>
+                    <button className = "btn btn-info " onClick={(e) => props.unitChanger(e)} value="imperial">Fahrenheit</button>
                 </div>
             </header>
         </article>

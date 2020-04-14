@@ -3,8 +3,11 @@ import Header from './components/Header';
 import Forecast from './components/Forecast';
 import { MainCard } from './components/MainCard';
 
+interface AppInterface {
+  units: string
+}
 
-export default class App extends React.Component {
+export default class App extends React.Component<{}, AppInterface> {
 
   constructor(props: any) {
     super(props);
@@ -22,9 +25,10 @@ export default class App extends React.Component {
   render() {
     return (
       <main >
-        <Header unitChanger={this.unitChanger.bind(this)}/>
-        <MainCard />
-        <Forecast />
+        <Header unitChanger={this.unitChanger.bind(this)}
+                units={this.state.units}/>
+        <MainCard units={this.state.units}/>
+        <Forecast units={this.state.units}/>
         <section className="d-flex flex-row justify-content-center">
         </section>
       </main>

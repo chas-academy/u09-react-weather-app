@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 var moment = require('moment');
 
-export const MainCard = () => {
+interface MainCardInterface {
+  units: string
+}
+
+export const MainCard = (props: MainCardInterface) => {
 
 
   const [weather, setWeather] = useState({
@@ -18,6 +22,9 @@ export const MainCard = () => {
   });
 
   const [ units, setUnits ] = useState("metric");
+  if (units !== props.units) {
+    setUnits(props.units)
+  }
 
   useEffect(() => {
 
@@ -29,32 +36,32 @@ export const MainCard = () => {
 
       if (navigator.geolocation) {
         console.log("Geolocation")
-        axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&units=${units}&appid=5a274b56354a707ffc91ac0c8eec0c72`)
+        axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=${units}&appid=5a274b56354a707ffc91ac0c8eec0c72`)
           .then(res => setWeather({
-            location: res.data.city.name,
-            country: res.data.city.country,
-            temperature: Math.floor(res.data.list[0].main.temp),
-            description: res.data.list[0].weather[0].main,
-            wind_speed: res.data.list[0].wind.speed,
-            humidity: res.data.list[0].main.humidity,
-            sunrise: moment.unix(res.data.city.sunrise).format("HH:MM"),
-            sunset: moment.unix(res.data.city.sunset).format("HH:MM"),
-            icon: res.data.list[0].weather[0].id,
+            location: res.data.name,
+            country: res.data.sys.country,
+            temperature: Math.floor(res.data.main.temp),
+            description: res.data.weather.main,
+            wind_speed: res.data.wind.speed,
+            humidity: res.data.main.humidity,
+            sunrise: moment.unix(res.data.sys.sunrise).format("HH:MM"),
+            sunset: moment.unix(res.data.sys.sunset).format("HH:MM"),
+            icon: res.data.weather[0].id,
           }))
       }
     }, function (error) {
       console.log("No Geolocation")
-      axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&units=metric&appid=5a274b56354a707ffc91ac0c8eec0c72`)
+      axios.get(`https://api.openweathermap.org/data/2.5/weather?q=berlin&units=${units}&appid=5a274b56354a707ffc91ac0c8eec0c72`)
         .then(res => setWeather({
-          location: res.data.city.name,
-          country: res.data.city.country,
-          temperature: Math.floor(res.data.list[0].main.temp),
-          description: res.data.list[0].weather[0].main,
-          wind_speed: res.data.list[0].wind.speed,
-          humidity: res.data.list[0].main.humidity,
-          sunrise: moment.unix(res.data.city.sunrise).format("HH:MM"),
-          sunset: moment.unix(res.data.city.sunset).format("HH:MM"),
-          icon: res.data.list[0].weather[0].id,
+          location: res.data.name,
+            country: res.data.sys.country,
+            temperature: Math.floor(res.data.main.temp),
+            description: res.data.weather.main,
+            wind_speed: res.data.wind.speed,
+            humidity: res.data.main.humidity,
+            sunrise: moment.unix(res.data.sys.sunrise).format("HH:MM"),
+            sunset: moment.unix(res.data.sys.sunset).format("HH:MM"),
+            icon: res.data.weather[0].id,
         }))
     })
 
@@ -71,15 +78,10 @@ export const MainCard = () => {
         </div>
         <h4 className="display-5">{weather.location}, {weather.country}</h4>
         <br></br>
-        <div className="btn-container">
-                    <button className = "btn btn-info mr-2"onClick={() => setUnits("metric")}>Celcius</button>
-                    <button className = "btn btn-info " onClick={() => setUnits("imperial")}>Fahrenheit</button>
-                </div>
-
         <div className="row">
           <div className="col-md-3 mt-4 text-center">
             <p><b>Wind Force</b></p>
-            <h2>{weather.wind_speed} km/hr</h2>
+            <h2>{weather.wind_speed} {(units === "metric" ? "m/s" : "m/h")}</h2>
           </div>
 
           <div className="col-md-3 text-center">
