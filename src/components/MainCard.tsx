@@ -71,7 +71,7 @@ export const MainCard = (props: MainCardInterface) => {
     <div>
       <div className="container mt-3 bg-light text-center">
         <div className="container d-flex col-3 text-center mt-4">
-          <h1 className="display-4 ">{weather.temperature}<sup>o</sup> {(units == "metric" ? "C" : "F")} <br>
+          <h1 className="display-4 ">{weather.temperature}<sup>o</sup>{(units == "metric" ? "C" : "F")} <br>
           </br>{weather.description}</h1>
           <i className = {` container display-1 owf owf-${weather.icon} owf-5x `}></i>
           {/*   <i className= {`wi ${weatherIcon[icon]} container display-1`}></i> */}
