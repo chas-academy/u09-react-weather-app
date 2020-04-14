@@ -42,7 +42,7 @@ export const MainCard = () => {
       }
     }, function (error) {
       console.log("No Geolocation")
-      axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=35&lon=135&units=metric&appid=5a274b56354a707ffc91ac0c8eec0c72`)
+      axios.get(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&units=metric&appid=5a274b56354a707ffc91ac0c8eec0c72`)
         .then(res => setWeather({
           location: res.data.city.name,
           country: res.data.city.country,

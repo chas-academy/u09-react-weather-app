@@ -12,7 +12,9 @@ export default class App extends React.Component {
   render() {
     return (
       <main >
+        <Header />
         <MainCard />
+        <Forecast />
         <section className="d-flex flex-row justify-content-center">
         </section>
       </main>
