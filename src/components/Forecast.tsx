@@ -5,7 +5,7 @@ interface ForecastState {
     weather: any,
     isLoaded: boolean,
     units: string,
-    geolocation: any
+    geolocation: object
 }
 
 // Interface for props.
@@ -25,7 +25,7 @@ interface Hour {
 class Forecast extends Component<ForecastProps, ForecastState> {
 
     // Emil API Key, can be switched out to your own.
-    private APIKey = '5a274b56354a707ffc91ac0c8eec0c72';
+    private APIKey: string = '5a274b56354a707ffc91ac0c8eec0c72';
 
     // Constructs class with default values to render page with.
     constructor(props: ForecastProps) {
@@ -48,15 +48,16 @@ class Forecast extends Component<ForecastProps, ForecastState> {
         }
     }
 
+    // Gets geolocation data.
     getPosition = () => {
         return new Promise((resolve, reject) => {
             navigator.geolocation.getCurrentPosition(resolve, reject);
         });
     }
 
-
-    getWeather = async (latitude: any, longitude: any) => {
-
+    // Async funtion that gets the weather.
+    getWeather = async (latitude: number | null, longitude: number | null) => {
+        // Checks if we have any geolocation data and then sends apicall with location if exists otherwise defaults to Berlin
         if (longitude != null || latitude != null) {
             const api_call = await
                     fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${this.APIKey}&units=${this.state.units}`);
@@ -80,7 +81,6 @@ class Forecast extends Component<ForecastProps, ForecastState> {
 
     // Function activates when component is rendered.
     componentDidMount() {
-
         this.getPosition()
             .then((position: any) => {
                 this.getWeather(
@@ -97,6 +97,8 @@ class Forecast extends Component<ForecastProps, ForecastState> {
     // Function that renders the component.
     render() {
 
+        // Checks if we're currently using the right units compared with the ones the App has sent as props, if wrong changes units in state,
+        // Then executes API-call again.
         if (this.state.units !== this.props.units) {
             this.setState({
                 units: this.props.units
@@ -127,8 +129,9 @@ class Forecast extends Component<ForecastProps, ForecastState> {
             units = 'F';
         }
 
+        // Function that makes dates into strings.
         function getDate(date: Date) {
-            var mm = date.getMonth() + 1; // getMonth() is zero-based
+            var mm = date.getMonth() + 1;
             var dd = date.getDate();
 
             return [date.getFullYear(),
@@ -137,6 +140,7 @@ class Forecast extends Component<ForecastProps, ForecastState> {
             ].join('-');
         };
 
+        // Makes a Datetime object for each of the five days and then returns the date from them with help of function above ^
         var today: any = new Date();
         today = getDate(today);
 
@@ -157,12 +161,13 @@ class Forecast extends Component<ForecastProps, ForecastState> {
         day5.setDate(day5.getDate() + 4)
         day5 = getDate(day5);
 
-
-        today = weather.list.filter((time: any) => time.dt_txt.includes(today));
-        tomorrow = weather.list.filter((time: any) => time.dt_txt.includes(tomorrow));
-        day3 = weather.list.filter((time: any) => time.dt_txt.includes(day3));
-        day4 = weather.list.filter((time: any) => time.dt_txt.includes(day4));
-        day5 = weather.list.filter((time: any) => time.dt_txt.includes(day5));
+        
+        // Groups up all times by what date they're on.
+        today = weather.list.filter((time: Hour) => time.dt_txt.includes(today));
+        tomorrow = weather.list.filter((time: Hour) => time.dt_txt.includes(tomorrow));
+        day3 = weather.list.filter((time: Hour) => time.dt_txt.includes(day3));
+        day4 = weather.list.filter((time: Hour) => time.dt_txt.includes(day4));
+        day5 = weather.list.filter((time: Hour) => time.dt_txt.includes(day5));
 
 
         // Checks if page is loaded or not and renders out the weather if is loaded and renders just a loading screen if not/until loaded.
@@ -170,7 +175,6 @@ class Forecast extends Component<ForecastProps, ForecastState> {
             return <div>Loading...</div>;
         } else {
             // Console logs weather for debugging purpose.
-            console.log(today);
             return (
                 <div className="Forecast d-flex flex-column align-items-center container">
                     <h3>5 day forecast</h3>
