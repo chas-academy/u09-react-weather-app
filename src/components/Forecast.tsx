@@ -8,6 +8,8 @@ interface ForecastState {
     geolocation: any
 }
 
+// Interface for props.
+
 interface ForecastProps {
     units: string
 }
@@ -56,59 +58,22 @@ class Forecast extends Component<ForecastProps, ForecastState> {
     getWeather = async (latitude: any, longitude: any) => {
 
         if (longitude != null || latitude != null) {
-            if (this.state.units === 'metric') {
-                const api_call = await
-                    fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${this.APIKey}&units=metric`);
+            const api_call = await
+                    fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${this.APIKey}&units=${this.state.units}`);
                 const data = await api_call.json();
                 this.setState({
                     weather: data,
                     isLoaded: true
                 })
-            } else if (this.state.units === 'imperial') {
-                const api_call = await
-                    fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${this.APIKey}&units=imperial`);
-                const data = await api_call.json();
-                this.setState({
-                    weather: data,
-                    isLoaded: true
-                })
-            } else {
-                const api_call = await
-                    fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${this.APIKey}`);
-                const data = await api_call.json();
-                this.setState({
-                    weather: data,
-                    isLoaded: true
-                })
-            }
 
         } else {
-            if (this.state.units === 'metric') {
-                const api_call = await
-                    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&units=metric&appid=${this.APIKey}`);
+            const api_call = await
+                    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&units=${this.state.units}&appid=${this.APIKey}`);
                 const data = await api_call.json();
                 this.setState({
                     weather: data,
                     isLoaded: true
                 })
-            } else if (this.state.units === 'imperial') {
-                const api_call = await
-                    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&units=imperial&appid=${this.APIKey}`);
-                const data = await api_call.json();
-                this.setState({
-                    weather: data,
-                    isLoaded: true
-                })
-            } else {
-                const api_call = await
-                    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&appid=${this.APIKey}`);
-                const data = await api_call.json();
-                this.setState({
-                    weather: data,
-                    isLoaded: true
-                })
-            }
-
         }
 
     }
@@ -151,9 +116,9 @@ class Forecast extends Component<ForecastProps, ForecastState> {
 
         // Defines variables for function.
         var { isLoaded, weather } = this.state;
-        var units = 'K';
-        var d = new Date();
-        var h = d.getHours();
+        var units: string = 'K';
+        var d: Date = new Date();
+        var h: number = d.getHours();
 
         // Checks what units we're using to display correct letter after the degrees.
         if (this.state.units === 'metric') {
@@ -162,7 +127,7 @@ class Forecast extends Component<ForecastProps, ForecastState> {
             units = 'F';
         }
 
-        function getDate(date: any) {
+        function getDate(date: Date) {
             var mm = date.getMonth() + 1; // getMonth() is zero-based
             var dd = date.getDate();
 
@@ -205,6 +170,7 @@ class Forecast extends Component<ForecastProps, ForecastState> {
             return <div>Loading...</div>;
         } else {
             // Console logs weather for debugging purpose.
+            console.log(today);
             return (
                 <div className="Forecast d-flex flex-column align-items-center container">
                     <h3>5 day forecast</h3>
