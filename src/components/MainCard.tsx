@@ -3,10 +3,11 @@ import axios from 'axios';
 var moment = require('moment');
 
 interface MainCardInterface {
-  units: string
+  units: string,
+  region: string,
 }
 
-export const MainCard = (props: MainCardInterface) => {
+export const MainCard = (props: MainCardInterface ) => {
 
 
   const [weather, setWeather] = useState({
@@ -26,16 +27,19 @@ export const MainCard = (props: MainCardInterface) => {
     setUnits(props.units)
   }
 
+  const city = props.region;
+  console.log(city);
+  
+
+
+
   useEffect(() => {
 
     navigator.geolocation.getCurrentPosition(function (position) {
       const latitude = position.coords.latitude;
       const longitude = position.coords.longitude;
-      console.log(latitude);
-      console.log(longitude);
 
       if (navigator.geolocation) {
-        console.log("Geolocation")
         axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=${units}&appid=5a274b56354a707ffc91ac0c8eec0c72`)
           .then(res => setWeather({
             location: res.data.name,
@@ -50,8 +54,7 @@ export const MainCard = (props: MainCardInterface) => {
           }))
       }
     }, function (error) {
-      console.log("No Geolocation")
-      axios.get(`https://api.openweathermap.org/data/2.5/weather?q=berlin&units=${units}&appid=5a274b56354a707ffc91ac0c8eec0c72`)
+      axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${units}&appid=5a274b56354a707ffc91ac0c8eec0c72`)
         .then(res => setWeather({
           location: res.data.name,
             country: res.data.sys.country,
@@ -65,7 +68,7 @@ export const MainCard = (props: MainCardInterface) => {
         }))
     })
 
-  }, [units])
+  }, [])
 
   return (
     <div>

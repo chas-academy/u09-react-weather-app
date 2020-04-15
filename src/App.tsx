@@ -5,6 +5,7 @@ import { MainCard } from './components/MainCard';
 
 interface AppInterface {
   units: string
+  region: string
 }
 
 export default class App extends React.Component<{}, AppInterface> {
@@ -12,8 +13,15 @@ export default class App extends React.Component<{}, AppInterface> {
   constructor(props: any) {
     super(props);
     this.state = {
-        units: 'metric',
-      }
+      units: 'metric',
+      region: 'berlin',
+    }
+  }
+
+  changeRegion(city: any) {
+    this.setState({
+      region: city,
+    })
   }
 
   unitChanger(e: any) {
@@ -26,9 +34,10 @@ export default class App extends React.Component<{}, AppInterface> {
     return (
       <main >
         <Header unitChanger={this.unitChanger.bind(this)}
-                units={this.state.units}/>
-        <MainCard units={this.state.units}/>
-        <Forecast units={this.state.units}/>
+          units={this.state.units}
+          changeRegion={this.changeRegion.bind(this)} />
+        <MainCard units={this.state.units} region={this.state.region} />
+        <Forecast units={this.state.units} />
         <section className="d-flex flex-row justify-content-center">
         </section>
       </main>
