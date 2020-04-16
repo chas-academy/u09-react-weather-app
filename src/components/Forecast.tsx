@@ -41,7 +41,7 @@ class Forecast extends Component<ForecastProps, ForecastState> {
             },
             isLoaded: false,
             units: 'imperial',
-            input: ' ',
+            input: '',
             geolocation: {
                 lat: null,
                 lon: null
@@ -58,7 +58,39 @@ class Forecast extends Component<ForecastProps, ForecastState> {
 
     getWeather = async (latitude: any, longitude: any) => {
         
-        if (longitude != null || latitude != null) {
+        if (this.state.input !== '') {
+            if (this.state.units === 'metric') {
+                const api_call = await
+                    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${this.state.input}&units=metric&appid=${this.APIKey}`);
+                const data = await api_call.json()
+                if (data) {
+                    this.setState({
+                        weather: data,
+                        isLoaded: true
+                    })
+                };
+            } else if (this.state.units === 'imperial') {
+                const api_call = await
+                    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${this.state.input}&units=imperial&appid=${this.APIKey}`);
+                const data = await api_call.json();
+                if(data) {
+                    this.setState({
+                        weather: data,
+                        isLoaded: true
+                    })
+                }   
+            } else {
+                const api_call = await
+                    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${this.state.input}&appid=${this.APIKey}`);
+                const data = await api_call.json();
+                if (data) {
+                    this.setState({
+                        weather: data,
+                        isLoaded: true
+                    })
+                }    
+            }
+        } else if (longitude != null || latitude != null) {
             if (this.state.units === 'metric') {
                 const api_call = await
                     fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${this.APIKey}&units=metric`);
@@ -153,6 +185,24 @@ class Forecast extends Component<ForecastProps, ForecastState> {
             });
         }
 
+        if (this.state.input !== this.props.input) {
+            this.setState({
+                input: this.props.input
+            })
+            this.getPosition()
+            .then((position: any) => {
+                this.getWeather(
+                    position.coords.latitude,
+                    position.coords.longitude
+                )
+            }
+            )
+            .catch(() => {
+                this.getWeather(null, null)
+                    .then(() => console.log("Error: User denied location, defaulting to Berlin."))
+            });
+        }
+        
         // Defines variables for function.
         var { isLoaded, weather } = this.state;
         var units = 'K';
@@ -176,32 +226,36 @@ class Forecast extends Component<ForecastProps, ForecastState> {
             ].join('-');
         };
 
-        var today: any = new Date();
-        today = getDate(today);
+        if (isLoaded) {
+            var today: any = new Date();
+            today = getDate(today);
+    
+            var tomorrow: any = new Date(today)
+            tomorrow.setDate(tomorrow.getDate() + 1)
+            tomorrow = getDate(tomorrow);
+    
+    
+            var day3: any = new Date(today)
+            day3.setDate(day3.getDate() + 2)
+            day3 = getDate(day3);
+    
+            var day4: any = new Date(today)
+            day4.setDate(day4.getDate() + 3)
+            day4 = getDate(day4);
+    
+            var day5: any = new Date(today)
+            day5.setDate(day5.getDate() + 4)
+            day5 = getDate(day5);
+    
+    
+            today = weather.list.filter((time: any) => time.dt_txt.includes(today));
+            tomorrow = weather.list.filter((time: any) => time.dt_txt.includes(tomorrow));
+            day3 = weather.list.filter((time: any) => time.dt_txt.includes(day3));
+            day4 = weather.list.filter((time: any) => time.dt_txt.includes(day4));
+            day5 = weather.list.filter((time: any) => time.dt_txt.includes(day5));
+        }
 
-        var tomorrow: any = new Date(today)
-        tomorrow.setDate(tomorrow.getDate() + 1)
-        tomorrow = getDate(tomorrow);
-
-
-        var day3: any = new Date(today)
-        day3.setDate(day3.getDate() + 2)
-        day3 = getDate(day3);
-
-        var day4: any = new Date(today)
-        day4.setDate(day4.getDate() + 3)
-        day4 = getDate(day4);
-
-        var day5: any = new Date(today)
-        day5.setDate(day5.getDate() + 4)
-        day5 = getDate(day5);
-
-
-        today = weather.list.filter((time: any) => time.dt_txt.includes(today));
-        tomorrow = weather.list.filter((time: any) => time.dt_txt.includes(tomorrow));
-        day3 = weather.list.filter((time: any) => time.dt_txt.includes(day3));
-        day4 = weather.list.filter((time: any) => time.dt_txt.includes(day4));
-        day5 = weather.list.filter((time: any) => time.dt_txt.includes(day5));
+        
 
 
         // Checks if page is loaded or not and renders out the weather if is loaded and renders just a loading screen if not/until loaded.
@@ -212,6 +266,7 @@ class Forecast extends Component<ForecastProps, ForecastState> {
             return (
                 <div className="Forecast d-flex flex-column align-items-center container">
                     <h3 className = "mt-3" >5 day forecast</h3>
+                    <h4>{weather.city.name}</h4>
                     <div className="row d-flex align-items-start justify-content-around">
                         {h <= 21  ? <div className="col-md border border-dark rounded">
                             <h5>Date: {today[0].dt_txt.slice(0, 10)}</h5>
@@ -274,109 +329,4 @@ class Forecast extends Component<ForecastProps, ForecastState> {
 
 // Exports class to be used in App.tsx.
 export default Forecast;
-
-
-/*   
-        navigator.geolocation.getCurrentPosition(
-            position => {
-                this.setState({ 
-                    geolocation: {
-                        lat: position.coords.latitude,
-                        lon: position.coords.longitude} 
-                });
-            }
-        );
-
-        if (this.state.units === 'metric') {
-            fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${this.state.geolocation.lat}&lon=${this.state.geolocation.lon}&units=metric&appid=${this.APIKey}`)
-            .then(res => res.json())
-            .then(json => {
-                this.setState({
-                    isLoaded: true,
-                    weather: json,
-                })
-            });
-        } else if (this.state.units === 'imperial') {
-            fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${this.state.geolocation.lat}&lon=${this.state.geolocation.lon}&units=imperial&appid=${this.APIKey}`)
-            .then(res => res.json())
-            .then(json => {
-                this.setState({
-                    isLoaded: true,
-                    weather: json,
-                })
-            });
-        } else {
-            fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${this.state.geolocation.lat}&lon=${this.state.geolocation.lon}&appid=${this.APIKey}`)
-            .then(res => res.json())
-            .then(json => {
-                this.setState({
-                    isLoaded: true,
-                    weather: json,
-                })
-            });
-        }
-
-         
-        // Checks if we have any geolocation or not and executes API call with coordinates if there is any otherwise defaults to Stockholm.
-        if (this.state.geolocation.lat != null || this.state.geolocation.lon != null) {
-            if (this.state.units === 'metric') {
-                fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${this.state.geolocation.lat}&lon=${this.state.geolocation.lon}&units=metric&appid=${this.APIKey}`)
-                .then(res => res.json())
-                .then(json => {
-                    this.setState({
-                        isLoaded: true,
-                        weather: json,
-                    })
-                });
-            } else if (this.state.units === 'imperial') {
-                fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${this.state.geolocation.lat}&lon=${this.state.geolocation.lon}&units=imperial&appid=${this.APIKey}`)
-                .then(res => res.json())
-                .then(json => {
-                    this.setState({
-                        isLoaded: true,
-                        weather: json,
-                    })
-                });
-            } else {
-                fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${this.state.geolocation.lat}&lon=${this.state.geolocation.lon}&appid=${this.APIKey}`)
-                .then(res => res.json())
-                .then(json => {
-                    this.setState({
-                        isLoaded: true,
-                        weather: json,
-                    })
-                });
-            }  
-        } else if (this.state.geolocation.lat === null || this.state.geolocation.lon === null) {
-            // Checks what units we want to use and then executes API call with those units.
-                if (this.state.units === 'metric') {
-                    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&units=metric&appid=${this.APIKey}`)
-                    .then(res => res.json())
-                    .then(json => {
-                        this.setState({
-                            isLoaded: true,
-                            weather: json,
-                        })
-                    });
-                } else if (this.state.units === 'imperial') {
-                    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&units=imperial&appid=${this.APIKey}`)
-                    .then(res => res.json())
-                    .then(json => {
-                        // If API call works then sets isLoaded to true so we know it's done and stores the result of API call in weather.
-                        this.setState({
-                            isLoaded: true,
-                            weather: json,
-                        })
-                    });
-                } else {
-                    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&appid=${this.APIKey}`)
-                    .then(res => res.json())
-                    .then(json => {
-                        this.setState({
-                            isLoaded: true,
-                            weather: json,
-                        })
-                    });
-            }  
-        }  
-        */   
+ 
