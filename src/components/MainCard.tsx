@@ -4,7 +4,7 @@ var moment = require('moment');
 
 interface MainCardInterface {
   units: string,
-  region: string,
+  input: string,
 }
 
 export const MainCard = (props: MainCardInterface ) => {
@@ -26,12 +26,10 @@ export const MainCard = (props: MainCardInterface ) => {
   if (units !== props.units) {
     setUnits(props.units)
   }
-
-  const city = props.region;
+  
+  const city = props.input;
   console.log(city);
   
-
-
 
   useEffect(() => {
 
@@ -40,7 +38,7 @@ export const MainCard = (props: MainCardInterface ) => {
       const longitude = position.coords.longitude;
 
       if (navigator.geolocation) {
-        axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=${units}&appid=5a274b56354a707ffc91ac0c8eec0c72`)
+        axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${units}&appid=5a274b56354a707ffc91ac0c8eec0c72`)
           .then(res => setWeather({
             location: res.data.name,
             country: res.data.sys.country,
@@ -52,6 +50,19 @@ export const MainCard = (props: MainCardInterface ) => {
             sunset: moment.unix(res.data.sys.sunset).format("HH:MM"),
             icon: res.data.weather[0].id,
           }))
+      } else if (city){
+        axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${units}&appid=5a274b56354a707ffc91ac0c8eec0c72`)
+        .then(res => setWeather({
+          location: res.data.name,
+            country: res.data.sys.country,
+            temperature: Math.floor(res.data.main.temp),
+            description: res.data.weather[0].main,
+            wind_speed: res.data.wind.speed,
+            humidity: res.data.main.humidity,
+            sunrise: moment.unix(res.data.sys.sunrise).format("HH:MM"),
+            sunset: moment.unix(res.data.sys.sunset).format("HH:MM"),
+            icon: res.data.weather[0].id,
+        }))
       }
     }, function (error) {
       axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${units}&appid=5a274b56354a707ffc91ac0c8eec0c72`)
@@ -68,7 +79,7 @@ export const MainCard = (props: MainCardInterface ) => {
         }))
     })
 
-  }, [])
+  }, [city])
 
   return (
     <div>

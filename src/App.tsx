@@ -1,11 +1,12 @@
 import React from 'react';
 import Header from './components/Header';
 import Forecast from './components/Forecast';
+import axios from 'axios';
 import { MainCard } from './components/MainCard';
 
 interface AppInterface {
   units: string
-  region: string
+  input: string
 }
 
 export default class App extends React.Component<{}, AppInterface> {
@@ -14,14 +15,23 @@ export default class App extends React.Component<{}, AppInterface> {
     super(props);
     this.state = {
       units: 'metric',
-      region: 'berlin',
+      input: 'berlin',
     }
   }
 
-  changeRegion(city: any) {
-    this.setState({
-      region: city,
-    })
+  changeRegion(event: any, city: any) {
+    if(event.key === 'Enter') {       
+      this.setState({
+        input: city,
+      })
+    }
+    
+  }
+
+  changeWeather(event: any){
+    event.preventDefault();
+    axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${this.state.input}&units=${this.state.units}&appid=5a274b56354a707ffc91ac0c8eec0c72`)
+        .then(res => console.log(res))
   }
 
   unitChanger(e: any) {
@@ -35,8 +45,9 @@ export default class App extends React.Component<{}, AppInterface> {
       <main >
         <Header unitChanger={this.unitChanger.bind(this)}
           units={this.state.units}
-          changeRegion={this.changeRegion.bind(this)} />
-        <MainCard units={this.state.units} region={this.state.region} />
+          changeRegion={this.changeRegion.bind(this)}
+          changeWeather = {this.changeWeather.bind(this)} />
+        <MainCard units={this.state.units} input={this.state.input} />
         <Forecast units={this.state.units} />
         <section className="d-flex flex-row justify-content-center">
         </section>
