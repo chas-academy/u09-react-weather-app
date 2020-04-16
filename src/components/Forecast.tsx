@@ -5,11 +5,13 @@ interface ForecastState {
     weather: any,
     isLoaded: boolean,
     units: string,
-    geolocation: any
+    geolocation: any,
+    input: string,
 }
 
 interface ForecastProps {
-    units: string
+    units: string, 
+    input: string,
 }
 
 // Interface for how data for 3hours interval should look like.
@@ -39,12 +41,15 @@ class Forecast extends Component<ForecastProps, ForecastState> {
             },
             isLoaded: false,
             units: 'imperial',
+            input: '',
             geolocation: {
                 lat: null,
                 lon: null
             }
         }
     }
+
+
 
     getPosition = () => {
         return new Promise((resolve, reject) => {
@@ -83,9 +88,9 @@ class Forecast extends Component<ForecastProps, ForecastState> {
             }
 
         } else {
-            if (this.state.units === 'metric') {
+            if (this.state.units === 'metric' && this.state.input !== null) {
                 const api_call = await
-                    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&units=metric&appid=${this.APIKey}`);
+                    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${this.state.input}&units=metric&appid=${this.APIKey}`);
                 const data = await api_call.json();
                 this.setState({
                     weather: data,

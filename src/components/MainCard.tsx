@@ -27,18 +27,15 @@ export const MainCard = (props: MainCardInterface ) => {
     setUnits(props.units)
   }
   
-  const city = props.input;
-  console.log(city);
   
-
   useEffect(() => {
-
+    
+    const city = props.input;
     navigator.geolocation.getCurrentPosition(function (position) {
       const latitude = position.coords.latitude;
       const longitude = position.coords.longitude;
 
-      if (navigator.geolocation) {
-        axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${units}&appid=5a274b56354a707ffc91ac0c8eec0c72`)
+        axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=${units}&appid=5a274b56354a707ffc91ac0c8eec0c72`)
           .then(res => setWeather({
             location: res.data.name,
             country: res.data.sys.country,
@@ -50,7 +47,8 @@ export const MainCard = (props: MainCardInterface ) => {
             sunset: moment.unix(res.data.sys.sunset).format("HH:MM"),
             icon: res.data.weather[0].id,
           }))
-      } else if (city){
+          
+    if (city !== null){
         axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${units}&appid=5a274b56354a707ffc91ac0c8eec0c72`)
         .then(res => setWeather({
           location: res.data.name,
@@ -65,7 +63,7 @@ export const MainCard = (props: MainCardInterface ) => {
         }))
       }
     }, function (error) {
-      axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${units}&appid=5a274b56354a707ffc91ac0c8eec0c72`)
+      axios.get(`https://api.openweathermap.org/data/2.5/weather?q=berlin&units=${units}&appid=5a274b56354a707ffc91ac0c8eec0c72`)
         .then(res => setWeather({
           location: res.data.name,
             country: res.data.sys.country,
@@ -79,7 +77,7 @@ export const MainCard = (props: MainCardInterface ) => {
         }))
     })
 
-  }, [city])
+  }, [props.input])
 
   return (
     <div>
@@ -87,7 +85,7 @@ export const MainCard = (props: MainCardInterface ) => {
         <div className="container d-flex col-3 text-center mt-4">
           <h1 className="display-4 mt-4">{weather.temperature}<sup>o</sup>{(units === "metric" ? "C" : "F")} <br>
           </br>{weather.description}</h1>
-          <i className = {` container display-1 owf owf-${weather.icon} owf-5x `}></i>
+          <i className = {`container mt-4 display-1 owf owf-${weather.icon} owf-5x `}></i>
           {/*   <i className= {`wi ${weatherIcon[icon]} container display-1`}></i> */}
         </div>
         <h4 className="display-5">{weather.location}, {weather.country}</h4>
