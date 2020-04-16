@@ -5,12 +5,12 @@ interface ForecastState {
     weather: any,
     isLoaded: boolean,
     units: string,
-    geolocation: any,
     input: string,
+    geolocation: any
 }
 
 interface ForecastProps {
-    units: string, 
+    units: string,
     input: string,
 }
 
@@ -41,15 +41,13 @@ class Forecast extends Component<ForecastProps, ForecastState> {
             },
             isLoaded: false,
             units: 'imperial',
-            input: '',
+            input: ' ',
             geolocation: {
                 lat: null,
                 lon: null
             }
         }
     }
-
-
 
     getPosition = () => {
         return new Promise((resolve, reject) => {
@@ -59,7 +57,7 @@ class Forecast extends Component<ForecastProps, ForecastState> {
 
 
     getWeather = async (latitude: any, longitude: any) => {
-
+        
         if (longitude != null || latitude != null) {
             if (this.state.units === 'metric') {
                 const api_call = await
@@ -88,9 +86,9 @@ class Forecast extends Component<ForecastProps, ForecastState> {
             }
 
         } else {
-            if (this.state.units === 'metric' && this.state.input !== null) {
+            if (this.state.units === 'metric') {
                 const api_call = await
-                    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${this.state.input}&units=metric&appid=${this.APIKey}`);
+                    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&units=metric&appid=${this.APIKey}`);
                 const data = await api_call.json();
                 this.setState({
                     weather: data,
@@ -106,7 +104,7 @@ class Forecast extends Component<ForecastProps, ForecastState> {
                 })
             } else {
                 const api_call = await
-                    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&appid=${this.APIKey}`);
+                    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=&appid=${this.APIKey}`);
                 const data = await api_call.json();
                 this.setState({
                     weather: data,
@@ -145,7 +143,8 @@ class Forecast extends Component<ForecastProps, ForecastState> {
             .then((position: any) => {
                 this.getWeather(
                     position.coords.latitude,
-                    position.coords.longitude)
+                    position.coords.longitude
+                )
             }
             )
             .catch(() => {
@@ -212,7 +211,7 @@ class Forecast extends Component<ForecastProps, ForecastState> {
             // Console logs weather for debugging purpose.
             return (
                 <div className="Forecast d-flex flex-column align-items-center container">
-                    <h3>5 day forecast</h3>
+                    <h3 className = "mt-3" >5 day forecast</h3>
                     <div className="row d-flex align-items-start justify-content-around">
                         {h <= 21  ? <div className="col-md border border-dark rounded">
                             <h5>Date: {today[0].dt_txt.slice(0, 10)}</h5>

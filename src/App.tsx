@@ -19,15 +19,15 @@ export default class App extends React.Component<{}, AppInterface> {
   }
 
   changeRegion(event: any, city: any) {
-    if (event.key === 'Enter') {
+    if(event.key === 'Enter') {       
       this.setState({
         input: city,
       })
     }
-
+    
   }
 
-  changeWeather(event: any) {
+  changeWeather(event: any){
     event.preventDefault();
   }
 
@@ -43,11 +43,10 @@ export default class App extends React.Component<{}, AppInterface> {
         <Header unitChanger={this.unitChanger.bind(this)}
           units={this.state.units}
           changeRegion={this.changeRegion.bind(this)}
-          changeWeather={this.changeWeather.bind(this)} />
-        <MainCard units={this.state.units}
-          input={this.state.input} />
+          changeWeather = {this.changeWeather.bind(this)} />
+        <MainCard units={this.state.units} input={this.state.input} />
         <Forecast units={this.state.units}
-          input={this.state.input} />
+                  input = {this.state.input} />
         <section className="d-flex flex-row justify-content-center">
         </section>
       </main>
