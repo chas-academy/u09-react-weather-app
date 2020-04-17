@@ -1,22 +1,11 @@
 # U09-React-weather-app
 
-## API
-Openweathermaps
+## Welcome to Juan, Emil and Viktors Weather app!
 
-## TO DO
-- Start with API Call (Emil).
-- Convert to Celcius or Fahrenheit depending on state (Includes automa from API).
-- Figure out Geolocation (Viktor).
+### To get started:
+- Clone repository down with "git clone https://github.com/chas-academy/u09-react-weather-app.git".
+- Go into the folder in your terminal and use command "npm install" to install neccessary packages.
+- Use command "npm start" in terminal to start the app in your browser.
+- Enjoy!
 
-## Components
-- Header (Fahrenheit or Celcius)
-- Current weather
-- Forecast
-
-## Design
-- Check Geolocation when site entered.
-- If no long or lattitude then Default to Sthlm
-api.openweathermap.org/data/2.5/weather?q=Stockholm
-- If geolocation then
-api.openweathermap.org/data/2.5/weather?lat=35&lon=139
-- 5 day forecast under with 3 hours intervall
+#### The API we've used is openweathermap.
