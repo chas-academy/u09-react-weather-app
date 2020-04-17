@@ -3,7 +3,8 @@ import axios from 'axios';
 var moment = require('moment');
 
 interface MainCardInterface {
-  units: string
+  units: string,
+  input: string,
 }
 
 export const MainCard = (props: MainCardInterface) => {
@@ -21,9 +22,14 @@ export const MainCard = (props: MainCardInterface) => {
     icon: null,
   });
 
-  const [ units, setUnits ] = useState("metric");
+  const [units, setUnits] = useState("metric");
   if (units !== props.units) {
     setUnits(props.units)
+  }
+
+  const [city, setCity] = useState("");
+  if (city !== props.input) {
+    setCity(props.input)
   }
 
   useEffect(() => {
@@ -31,12 +37,42 @@ export const MainCard = (props: MainCardInterface) => {
     navigator.geolocation.getCurrentPosition(function (position) {
       const latitude = position.coords.latitude;
       const longitude = position.coords.longitude;
-      console.log(latitude);
-      console.log(longitude);
 
-      if (navigator.geolocation) {
-        console.log("Geolocation")
+      if (city !== "") {
+        axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${units}&appid=5a274b56354a707ffc91ac0c8eec0c72`)
+          .then(res => 
+            setWeather({
+            location: res.data.name,
+            country: res.data.sys.country,
+            temperature: Math.floor(res.data.main.temp),
+            description: res.data.weather[0].main,
+            wind_speed: res.data.wind.speed,
+            humidity: res.data.main.humidity,
+            sunrise: moment.unix(res.data.sys.sunrise).format("HH:MM"),
+            sunset: moment.unix(res.data.sys.sunset).format("HH:MM"),
+            icon: res.data.weather[0].id,
+          }))
+      } else {
         axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=${units}&appid=5a274b56354a707ffc91ac0c8eec0c72`)
+        .then(res => setWeather({
+          location: res.data.name,
+          country: res.data.sys.country,
+          temperature: Math.floor(res.data.main.temp),
+          description: res.data.weather[0].main,
+          wind_speed: res.data.wind.speed,
+          humidity: res.data.main.humidity,
+          sunrise: moment.unix(res.data.sys.sunrise).format("HH:MM"),
+          sunset: moment.unix(res.data.sys.sunset).format("HH:MM"),
+          icon: res.data.weather[0].id,
+        }))
+      }
+
+      
+
+      
+    }, function (error) {
+      if (city !== "") {
+        axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${units}&appid=5a274b56354a707ffc91ac0c8eec0c72`)
           .then(res => setWeather({
             location: res.data.name,
             country: res.data.sys.country,
@@ -48,24 +84,22 @@ export const MainCard = (props: MainCardInterface) => {
             sunset: moment.unix(res.data.sys.sunset).format("HH:MM"),
             icon: res.data.weather[0].id,
           }))
+      } else {
+        axios.get(`https://api.openweathermap.org/data/2.5/weather?q=berlin&units=${units}&appid=5a274b56354a707ffc91ac0c8eec0c72`)
+      .then(res => setWeather({
+        location: res.data.name,
+        country: res.data.sys.country,
+        temperature: Math.floor(res.data.main.temp),
+        description: res.data.weather[0].main,
+        wind_speed: res.data.wind.speed,
+        humidity: res.data.main.humidity,
+        sunrise: moment.unix(res.data.sys.sunrise).format("HH:MM"),
+        sunset: moment.unix(res.data.sys.sunset).format("HH:MM"),
+        icon: res.data.weather[0].id,
+      }))
       }
-    }, function (error) {
-      console.log("No Geolocation")
-      axios.get(`https://api.openweathermap.org/data/2.5/weather?q=berlin&units=${units}&appid=5a274b56354a707ffc91ac0c8eec0c72`)
-        .then(res => setWeather({
-          location: res.data.name,
-            country: res.data.sys.country,
-            temperature: Math.floor(res.data.main.temp),
-            description: res.data.weather[0].main,
-            wind_speed: res.data.wind.speed,
-            humidity: res.data.main.humidity,
-            sunrise: moment.unix(res.data.sys.sunrise).format("HH:MM"),
-            sunset: moment.unix(res.data.sys.sunset).format("HH:MM"),
-            icon: res.data.weather[0].id,
-        }))
     })
-
-  }, [units])
+  }, [props.input, city, units])
 
   return (
     <div>
@@ -73,7 +107,7 @@ export const MainCard = (props: MainCardInterface) => {
         <div className="container d-flex col-3 text-center mt-4">
           <h1 className="display-4 mt-4">{weather.temperature}<sup>o</sup>{(units === "metric" ? "C" : "F")} <br>
           </br>{weather.description}</h1>
-          <i className = {` container display-1 owf owf-${weather.icon} owf-5x `}></i>
+          <i className={`container mt-4 display-1 owf owf-${weather.icon} owf-5x `}></i>
           {/*   <i className= {`wi ${weatherIcon[icon]} container display-1`}></i> */}
         </div>
         <h4 className="display-5">{weather.location}, {weather.country}</h4>
