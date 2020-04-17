@@ -41,7 +41,6 @@ export default class App extends React.Component<{}, AppInterface> {
     return (
       <main >
         <Header unitChanger={this.unitChanger.bind(this)}
-          units={this.state.units}
           changeRegion={this.changeRegion.bind(this)}
           changeWeather = {this.changeWeather.bind(this)} />
         <MainCard units={this.state.units} input={this.state.input} />

@@ -131,7 +131,6 @@ class Forecast extends Component<ForecastProps, ForecastState> {
             )
             .catch(() => {
                 this.getWeather(null, null)
-                    .then(() => console.log("Error: User denied location, defaulting to Berlin."))
             });
         }
 
@@ -149,15 +148,14 @@ class Forecast extends Component<ForecastProps, ForecastState> {
             )
             .catch(() => {
                 this.getWeather(null, null)
-                    .then(() => console.log("Error: User denied location, defaulting to Berlin."))
             });
         }
         
         // Defines variables for function.
         var { isLoaded, weather, match } = this.state;
-        var units = 'K';
-        var d = new Date();
-        var h = d.getHours();
+        var units: string = 'K';
+        var d: Date = new Date();
+        var h: number = d.getHours();
 
         // Checks what units we're using to display correct letter after the degrees.
         if (this.state.units === 'metric') {
@@ -167,7 +165,7 @@ class Forecast extends Component<ForecastProps, ForecastState> {
         }
 
         function getDate(date: any) {
-            var mm = date.getMonth() + 1; // getMonth() is zero-based
+            var mm = date.getMonth() + 1;
             var dd = date.getDate();
 
             return [date.getFullYear(),
@@ -198,11 +196,11 @@ class Forecast extends Component<ForecastProps, ForecastState> {
             day5 = getDate(day5);
     
     
-            today = weather.list.filter((time: any) => time.dt_txt.includes(today));
-            tomorrow = weather.list.filter((time: any) => time.dt_txt.includes(tomorrow));
-            day3 = weather.list.filter((time: any) => time.dt_txt.includes(day3));
-            day4 = weather.list.filter((time: any) => time.dt_txt.includes(day4));
-            day5 = weather.list.filter((time: any) => time.dt_txt.includes(day5));
+            today = weather.list.filter((time: Hour) => time.dt_txt.includes(today));
+            tomorrow = weather.list.filter((time: Hour) => time.dt_txt.includes(tomorrow));
+            day3 = weather.list.filter((time: Hour) => time.dt_txt.includes(day3));
+            day4 = weather.list.filter((time: Hour) => time.dt_txt.includes(day4));
+            day5 = weather.list.filter((time: Hour) => time.dt_txt.includes(day5));
         }
 
         
@@ -212,13 +210,16 @@ class Forecast extends Component<ForecastProps, ForecastState> {
         if (!isLoaded) {
             return <div>Loading...</div>;
         } else if (!match) {
-            return <div>Can't find anything on your search, check for spelling.</div>
+            return ( 
+                <div className="text-center">
+                <h5>No matches found on search. Try again or clear the search-bar.</h5>
+                </div>
+            )
         } else {
             // Console logs weather for debugging purpose.
             return (
                 <div className="Forecast d-flex flex-column align-items-center container">
                     <h3 className = "mt-3" >5 day forecast</h3>
-                    <h4>{weather.city.name}</h4>
                     <div className="row d-flex align-items-start justify-content-around">
                         {h <= 21  ? <div className="col-md border border-dark rounded">
                             <h5>Date: {today[0].dt_txt.slice(0, 10)}</h5>

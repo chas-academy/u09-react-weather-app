@@ -27,8 +27,7 @@ export const MainCard = (props: MainCardInterface) => {
     setUnits(props.units)
   }
 
-  const [city, setCity] = useState("metric");
-
+  const [city, setCity] = useState("");
   if (city !== props.input) {
     setCity(props.input)
   }
@@ -39,7 +38,22 @@ export const MainCard = (props: MainCardInterface) => {
       const latitude = position.coords.latitude;
       const longitude = position.coords.longitude;
 
-      axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=${units}&appid=5a274b56354a707ffc91ac0c8eec0c72`)
+      if (city !== "") {
+        axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${units}&appid=5a274b56354a707ffc91ac0c8eec0c72`)
+          .then(res => 
+            setWeather({
+            location: res.data.name,
+            country: res.data.sys.country,
+            temperature: Math.floor(res.data.main.temp),
+            description: res.data.weather[0].main,
+            wind_speed: res.data.wind.speed,
+            humidity: res.data.main.humidity,
+            sunrise: moment.unix(res.data.sys.sunrise).format("HH:MM"),
+            sunset: moment.unix(res.data.sys.sunset).format("HH:MM"),
+            icon: res.data.weather[0].id,
+          }))
+      } else {
+        axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=${units}&appid=5a274b56354a707ffc91ac0c8eec0c72`)
         .then(res => setWeather({
           location: res.data.name,
           country: res.data.sys.country,
@@ -51,8 +65,13 @@ export const MainCard = (props: MainCardInterface) => {
           sunset: moment.unix(res.data.sys.sunset).format("HH:MM"),
           icon: res.data.weather[0].id,
         }))
+      }
 
-      if (city !== null) {
+      
+
+      
+    }, function (error) {
+      if (city !== "") {
         axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${units}&appid=5a274b56354a707ffc91ac0c8eec0c72`)
           .then(res => setWeather({
             location: res.data.name,
@@ -65,9 +84,8 @@ export const MainCard = (props: MainCardInterface) => {
             sunset: moment.unix(res.data.sys.sunset).format("HH:MM"),
             icon: res.data.weather[0].id,
           }))
-      }
-    }, function (error) {
-      axios.get(`https://api.openweathermap.org/data/2.5/weather?q=berlin&units=${units}&appid=5a274b56354a707ffc91ac0c8eec0c72`)
+      } else {
+        axios.get(`https://api.openweathermap.org/data/2.5/weather?q=berlin&units=${units}&appid=5a274b56354a707ffc91ac0c8eec0c72`)
       .then(res => setWeather({
         location: res.data.name,
         country: res.data.sys.country,
@@ -79,20 +97,7 @@ export const MainCard = (props: MainCardInterface) => {
         sunset: moment.unix(res.data.sys.sunset).format("HH:MM"),
         icon: res.data.weather[0].id,
       }))
-      if (city !== null) {
-        axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=${units}&appid=5a274b56354a707ffc91ac0c8eec0c72`)
-          .then(res => setWeather({
-            location: res.data.name,
-            country: res.data.sys.country,
-            temperature: Math.floor(res.data.main.temp),
-            description: res.data.weather[0].main,
-            wind_speed: res.data.wind.speed,
-            humidity: res.data.main.humidity,
-            sunrise: moment.unix(res.data.sys.sunrise).format("HH:MM"),
-            sunset: moment.unix(res.data.sys.sunset).format("HH:MM"),
-            icon: res.data.weather[0].id,
-          }))
-      } 
+      }
     })
   }, [props.input, city, units])
 
