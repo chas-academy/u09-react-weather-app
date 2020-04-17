@@ -6,7 +6,8 @@ interface ForecastState {
     isLoaded: boolean,
     units: string,
     input: string,
-    geolocation: any
+    geolocation: object
+    match: boolean
 }
 
 interface ForecastProps {
@@ -40,6 +41,7 @@ class Forecast extends Component<ForecastProps, ForecastState> {
                 ]
             },
             isLoaded: false,
+            match: false,
             units: 'imperial',
             input: '',
             geolocation: {
@@ -57,93 +59,41 @@ class Forecast extends Component<ForecastProps, ForecastState> {
 
 
     getWeather = async (latitude: any, longitude: any) => {
-        
-        if (this.state.input !== '') {
-            if (this.state.units === 'metric') {
-                const api_call = await
-                    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${this.state.input}&units=metric&appid=${this.APIKey}`);
-                const data = await api_call.json()
-                if (data) {
+
+        if (this.props.input !== '') {
+            const api_call = await
+                fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${this.props.input}&units=${this.state.units}&appid=${this.APIKey}`);
+            const data = await api_call.json()
+                if (api_call.status === 200) {
                     this.setState({
                         weather: data,
-                        isLoaded: true
+                        isLoaded: true,
+                        match: true
                     })
-                };
-            } else if (this.state.units === 'imperial') {
-                const api_call = await
-                    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${this.state.input}&units=imperial&appid=${this.APIKey}`);
-                const data = await api_call.json();
-                if(data) {
+                } else {
                     this.setState({
-                        weather: data,
-                        isLoaded: true
+                        match: false
                     })
-                }   
-            } else {
-                const api_call = await
-                    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=${this.state.input}&appid=${this.APIKey}`);
-                const data = await api_call.json();
-                if (data) {
-                    this.setState({
-                        weather: data,
-                        isLoaded: true
-                    })
-                }    
-            }
+                }
+                
         } else if (longitude != null || latitude != null) {
-            if (this.state.units === 'metric') {
                 const api_call = await
-                    fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${this.APIKey}&units=metric`);
+                    fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${this.APIKey}&units=${this.state.units}`);
                 const data = await api_call.json();
                 this.setState({
                     weather: data,
-                    isLoaded: true
+                    isLoaded: true,
+                    match: true
                 })
-            } else if (this.state.units === 'imperial') {
-                const api_call = await
-                    fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${this.APIKey}&units=imperial`);
-                const data = await api_call.json();
-                this.setState({
-                    weather: data,
-                    isLoaded: true
-                })
-            } else {
-                const api_call = await
-                    fetch(`https://api.openweathermap.org/data/2.5/forecast?lat=${latitude}&lon=${longitude}&appid=${this.APIKey}`);
-                const data = await api_call.json();
-                this.setState({
-                    weather: data,
-                    isLoaded: true
-                })
-            }
-
         } else {
-            if (this.state.units === 'metric') {
                 const api_call = await
-                    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&units=metric&appid=${this.APIKey}`);
+                    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&units=${this.state.units}&appid=${this.APIKey}`);
                 const data = await api_call.json();
                 this.setState({
                     weather: data,
-                    isLoaded: true
+                    isLoaded: true,
+                    match: true
                 })
-            } else if (this.state.units === 'imperial') {
-                const api_call = await
-                    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=berlin&units=imperial&appid=${this.APIKey}`);
-                const data = await api_call.json();
-                this.setState({
-                    weather: data,
-                    isLoaded: true
-                })
-            } else {
-                const api_call = await
-                    fetch(`https://api.openweathermap.org/data/2.5/forecast?q=&appid=${this.APIKey}`);
-                const data = await api_call.json();
-                this.setState({
-                    weather: data,
-                    isLoaded: true
-                })
-            }
-
         }
 
     }
@@ -204,7 +154,7 @@ class Forecast extends Component<ForecastProps, ForecastState> {
         }
         
         // Defines variables for function.
-        var { isLoaded, weather } = this.state;
+        var { isLoaded, weather, match } = this.state;
         var units = 'K';
         var d = new Date();
         var h = d.getHours();
@@ -261,6 +211,8 @@ class Forecast extends Component<ForecastProps, ForecastState> {
         // Checks if page is loaded or not and renders out the weather if is loaded and renders just a loading screen if not/until loaded.
         if (!isLoaded) {
             return <div>Loading...</div>;
+        } else if (!match) {
+            return <div>Can't find anything on your search, check for spelling.</div>
         } else {
             // Console logs weather for debugging purpose.
             return (

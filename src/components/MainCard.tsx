@@ -27,7 +27,11 @@ export const MainCard = (props: MainCardInterface) => {
     setUnits(props.units)
   }
 
-  const city = props.input;
+  const [city, setCity] = useState("metric");
+
+  if (city !== props.input) {
+    setCity(props.input)
+  }
 
   useEffect(() => {
 
